@@ -1,5 +1,6 @@
 import { Route, Routes } from 'react-router-dom'
 import { Home } from './routes/Home/Home'
+import MySpace from './routes/MySpace/MySpace'
 import { Navigation } from './routes/Navigation/Navigation'
 
 function App (): JSX.Element {
@@ -7,6 +8,7 @@ function App (): JSX.Element {
     <Routes>
       <Route path='/' element={<Navigation />}>
         <Route path='/' element={<Home />} />
+        <Route path='/' element={<MySpace />} />
       </Route>
     </Routes>
 
