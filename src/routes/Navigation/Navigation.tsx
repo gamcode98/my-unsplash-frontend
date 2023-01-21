@@ -28,7 +28,7 @@ const Navigation = (): JSX.Element => {
           <button onClick={() => setShowMenu(!showMenu)} className='outline-none lg:hidden'>
             <img src={showMenu ? xMarkIcon : barsIcon} width={25} />
           </button>
-          <ul className={`absolute left-0 right-0 top-16 shadow-md p-4 flex flex-col items-center ${showMenu ? 'translate-x-0' : '-translate-x-[120%] md:-translate-x-[150%]'} ease-in duration-300 
+          <ul className={`absolute left-0 right-0 top-16 bg-white shadow-md p-4 flex flex-col items-center ${showMenu ? 'translate-x-0' : '-translate-x-[120%] md:-translate-x-[150%]'} ease-in duration-300 
         md:w-3/5 md:mx-auto lg:static lg:translate-x-0 lg:flex-row lg:gap-6 lg:w-auto lg:mx-0 lg:shadow-none`}
           >
             <button className='bg-green text-white px-4 py-2 rounded-lg mb-2 lg:mb-0'>Add a photo</button>
