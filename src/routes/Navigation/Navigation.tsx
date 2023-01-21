@@ -26,7 +26,7 @@ const Navigation = (): JSX.Element => {
             />
           </div>
           <button onClick={() => setShowMenu(!showMenu)} className='outline-none lg:hidden'>
-            <img src={showMenu ? xMarkIcon : barsIcon} width={25} />
+            <img src={showMenu ? xMarkIcon : barsIcon} width={30} />
           </button>
           <ul className={`absolute left-0 right-0 top-16 bg-white shadow-md p-4 flex flex-col items-center ${showMenu ? 'translate-x-0' : '-translate-x-[120%] md:-translate-x-[150%]'} ease-in duration-300 
         md:w-3/5 md:mx-auto lg:static lg:translate-x-0 lg:flex-row lg:gap-6 lg:w-auto lg:mx-0 lg:shadow-none`}
