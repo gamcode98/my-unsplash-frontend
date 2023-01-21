@@ -20,7 +20,7 @@ const Login = (props: Props): JSX.Element => {
           className='border border-light-gray rounded-md p-2 focus:outline-none focus:border-black mb-4 w-full'
         />
       </label>
-      <button className='bg-black font-bold text-white p-2 rounded-md w-full mb-4'>Log in</button>
+      <button className='bg-black font-bold text-white p-2 rounded-md w-full mb-4 hover:-translate-y-0.5 ease-linear duration-100 will-change-transform'>Log in</button>
       <p className='text-center mb-4 text-green hover:underline decoration-1 cursor-pointer'>Reset password</p>
       <p className='text-center'>No account? <span className='text-green hover:underline decoration-1 cursor-pointer' onClick={changeToSignUp}>Create one</span></p>
     </form>

@@ -20,7 +20,7 @@ const SignUp = (props: Props): JSX.Element => {
           className='border border-light-gray rounded-md p-2 focus:outline-none focus:border-black mb-4 w-full'
         />
       </label>
-      <button className='bg-black font-bold text-white p-2 rounded-md w-full mb-4'>Create account</button>
+      <button className='bg-black font-bold text-white p-2 rounded-md w-full mb-4 hover:-translate-y-0.5 ease-linear duration-100 will-change-transform'>Create account</button>
       <p className='text-center text-dark-gray'>Already have an account?
         <span
           className='text-green hover:underline decoration-1 cursor-pointer'
