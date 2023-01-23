@@ -31,7 +31,7 @@ const Navigation = (): JSX.Element => {
           <ul className={`absolute left-0 right-0 top-16 bg-white shadow-md p-4 flex flex-col items-center ${showMenu ? 'translate-x-0' : '-translate-x-[120%] md:-translate-x-[150%]'} ease-in duration-300 
         md:w-3/5 md:mx-auto lg:static lg:translate-x-0 lg:flex-row lg:gap-6 lg:w-auto lg:mx-0 lg:shadow-none`}
           >
-            <button className='bg-green text-white px-4 py-2 rounded-lg mb-2 lg:mb-0'>Add a photo</button>
+            <button className='bg-green text-white px-4 py-2 rounded-lg mb-2 lg:mb-0 hover:-translate-y-0.5 ease-linear duration-100 will-change-transform'>Add a photo</button>
             <li className='mb-2 lg:mb-0'>
               <a href='#'>Signup</a>
             </li>

@@ -1,30 +1,85 @@
+/* eslint-disable @typescript-eslint/no-misused-promises */
+import { Control, SubmitHandler, useForm, FieldValues } from 'react-hook-form'
+import { useState } from 'react'
+import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
+import { FormControl } from './FormControl'
+import { IImage } from '../interfaces/IImage'
+import { IAlert } from '../interfaces/IAlert'
+
+const schema = yup.object({
+  password: yup
+    .string()
+    .required()
+}).required()
+
 interface Props {
   handleCloseModal: () => void
   imageId: string | null
+  setAlert: React.Dispatch<React.SetStateAction<IAlert>>
+  images: IImage[]
+  setImages: React.Dispatch<React.SetStateAction<IImage[]>>
 }
-const DeleteImage = (props: Props): JSX.Element => {
-  const { handleCloseModal, imageId } = props
 
-  // const showImageId = (): void => console.log({ imageId })
+interface IFormInputs {
+  password: string
+}
+
+const DeleteImage = (props: Props): JSX.Element => {
+  const { handleCloseModal, imageId, setAlert, images, setImages } = props
+
+  const [isLoading, setIsloading] = useState<boolean>(false)
+
+  const { handleSubmit, control, reset } = useForm<IFormInputs>({
+    defaultValues: { password: '' },
+    resolver: yupResolver(schema),
+    mode: 'onChange'
+  })
+
+  const onSubmit: SubmitHandler<IFormInputs> = data => {
+    console.log(data)
+    setIsloading(true)
+    reset()
+    setTimeout(() => {
+      console.log('this is the id to delete ' + imageId)
+      const imagesFiltered = images.filter(image => image._id !== imageId)
+      setImages(imagesFiltered)
+      setIsloading(false)
+      setAlert({ status: 'success', message: 'Image deleted successfully', show: true })
+      handleCloseModal()
+    }, 3000)
+  }
+
+  const handleClose = (): void => {
+    reset()
+    handleCloseModal()
+  }
 
   return (
-    <form className='font-noto-sans'>
+    <form className='font-noto-sans' onSubmit={handleSubmit(onSubmit)}>
       <h2 className='mb-4 text-lg'>Are you sure?</h2>
-      <label
-        htmlFor='password'
-        className='block text-xs mb-2'
-      >Password
-      </label>
-      <input
-        id='password'
-        type='password'
-        placeholder='Your secret password'
-        className='block px-4 py-2 mb-4 border border-light-gray rounded-md p-2 focus:outline-none focus:border-black w-full'
+
+      <FormControl
+        control={(control as unknown) as Control<FieldValues>}
+        name='password'
+        rules={{ required: true }}
       />
+
       <div className='flex gap-4 justify-end'>
-        <button onClick={handleCloseModal} className='text-light-gray' type='button'>Cancel</button>
-        {/* <button className='bg-green text-white px-4 py-2 rounded-md font-bold' type='button' onClick={showImageId}>Get imageID</button> */}
-        <button className='bg-red text-white px-4 py-2 rounded-md font-bold'>Confrm</button>
+        <button
+          onClick={handleClose}
+          className={`text-light-gray ${isLoading && 'cursor-wait'}`}
+          disabled={isLoading}
+          type='button'
+        >Cancel
+        </button>
+
+        <button
+          className={`bg-red text-white px-4 py-2 rounded-md font-bold hover:-translate-y-0.5 ease-linear duration-100 will-change-transform 
+            ${isLoading && 'cursor-wait bg-opacity-75 hover:translate-y-0'}`}
+          type='submit' disabled={isLoading}
+        >{isLoading ? 'Removing...' : 'Confirm'}
+        </button>
       </div>
     </form>
   )
