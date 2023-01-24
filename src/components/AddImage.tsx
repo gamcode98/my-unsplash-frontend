@@ -1,51 +1,51 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
 import { useState } from 'react'
 import { Control, SubmitHandler, useForm, FieldValues } from 'react-hook-form'
-import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
+import * as yup from 'yup'
 import { FormControl } from './FormControl'
-import { IImage } from '../interfaces/IImage'
 import { IAlert } from '../interfaces/IAlert'
+import { IImage } from '../interfaces/IImage'
 
 const schema = yup.object({
-  password: yup
+  label: yup
+    .string()
+    .required(),
+  photoUrl: yup
     .string()
     .required()
 }).required()
 
 interface Props {
   handleCloseModal: () => void
-  imageId: string | null
   setAlert: React.Dispatch<React.SetStateAction<IAlert>>
   images: IImage[]
   setImages: React.Dispatch<React.SetStateAction<IImage[]>>
 }
 
 interface IFormInputs {
-  password: string
+  label: string
+  photoUrl: string
 }
 
-const DeleteImage = (props: Props): JSX.Element => {
-  const { handleCloseModal, imageId, setAlert, images, setImages } = props
-
+const AddImage = (props: Props): JSX.Element => {
+  const { handleCloseModal, setAlert, images, setImages } = props
   const [isLoading, setIsloading] = useState<boolean>(false)
 
   const { handleSubmit, control, reset } = useForm<IFormInputs>({
-    defaultValues: { password: '' },
+    defaultValues: { label: '', photoUrl: '' },
     resolver: yupResolver(schema),
     mode: 'onChange'
   })
 
   const onSubmit: SubmitHandler<IFormInputs> = data => {
-    console.log(data)
+    const { label, photoUrl } = data
     setIsloading(true)
     reset()
     setTimeout(() => {
-      console.log('this is the id to delete ' + imageId)
-      const imagesFiltered = images.filter(image => image._id !== imageId)
-      setImages(imagesFiltered)
+      setImages([{ _id: crypto.randomUUID(), label, photoUrl }, ...images])
       setIsloading(false)
-      setAlert({ status: 'success', message: 'Image deleted successfully', show: true })
+      setAlert({ status: 'success', message: 'Image added successfully', show: true })
       handleCloseModal()
     }, 3000)
   }
@@ -57,16 +57,26 @@ const DeleteImage = (props: Props): JSX.Element => {
 
   return (
     <form className='font-noto-sans' onSubmit={handleSubmit(onSubmit)}>
-      <h2 className='mb-4 text-lg'>Are you sure?</h2>
+      <h2 className='mb-4 text-lg'>Add a new photo</h2>
 
       <FormControl
         control={(control as unknown) as Control<FieldValues>}
-        name='password'
+        name='label'
         rules={{ required: true }}
-        labelId='password-to-delete-image'
-        labelText='Password'
-        typeOfInput='password'
-        placeholder='Your secret password'
+        labelId='label-text'
+        labelText='Label'
+        typeOfInput='text'
+        placeholder='Suspendisse elit massa'
+      />
+
+      <FormControl
+        control={(control as unknown) as Control<FieldValues>}
+        name='photoUrl'
+        rules={{ required: true }}
+        labelId='photo-url'
+        labelText='Photo URL'
+        typeOfInput='text'
+        placeholder='https://unsplash.com/es/fotos/1223498193-J-aHtRnZalkpsI...'
       />
 
       <div className='flex gap-4 justify-end'>
@@ -79,14 +89,14 @@ const DeleteImage = (props: Props): JSX.Element => {
         </button>
 
         <button
-          className={`bg-red text-white px-4 py-2 rounded-md font-bold hover:-translate-y-0.5 ease-linear duration-100 will-change-transform 
+          className={`bg-green text-white px-4 py-2 rounded-md font-bold hover:-translate-y-0.5 ease-linear duration-100 will-change-transform 
             ${isLoading && 'cursor-wait bg-opacity-75 hover:translate-y-0'}`}
           type='submit' disabled={isLoading}
-        >{isLoading ? 'Removing...' : 'Confirm'}
+        >{isLoading ? 'Adding...' : 'Submit'}
         </button>
       </div>
     </form>
   )
 }
 
-export { DeleteImage }
+export { AddImage }
