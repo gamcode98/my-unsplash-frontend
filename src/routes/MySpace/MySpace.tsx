@@ -11,10 +11,11 @@ interface Props {
   setAlert: React.Dispatch<React.SetStateAction<IAlert>>
   images: IImage[]
   setImages: React.Dispatch<React.SetStateAction<IImage[]>>
+  searchResults: IImage[]
 }
 
 const MySpace = (props: Props): JSX.Element => {
-  const { alert, setAlert, images, setImages } = props
+  const { alert, setAlert, images, setImages, searchResults } = props
 
   const [imageId, setImageId] = useState<null | string>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -37,7 +38,7 @@ const MySpace = (props: Props): JSX.Element => {
       {
         isLoading
           ? <ImagesSkeleton />
-          : <Images handleOpenModal={handleOpenModal} images={images} />
+          : <Images handleOpenModal={handleOpenModal} searchResults={searchResults} />
       }
       <dialog ref={modalRef} className='rounded-md p-6 fixed md:w-2/4 lg:w-1/3'>
         <DeleteImage

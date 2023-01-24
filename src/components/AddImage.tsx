@@ -30,6 +30,7 @@ interface IFormInputs {
 
 const AddImage = (props: Props): JSX.Element => {
   const { handleCloseModal, setAlert, images, setImages } = props
+
   const [isLoading, setIsloading] = useState<boolean>(false)
 
   const { handleSubmit, control, reset } = useForm<IFormInputs>({

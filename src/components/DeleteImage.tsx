@@ -41,7 +41,6 @@ const DeleteImage = (props: Props): JSX.Element => {
     setIsloading(true)
     reset()
     setTimeout(() => {
-      console.log('this is the id to delete ' + imageId)
       const imagesFiltered = images.filter(image => image._id !== imageId)
       setImages(imagesFiltered)
       setIsloading(false)

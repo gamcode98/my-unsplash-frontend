@@ -7,15 +7,17 @@ import { Outlet } from 'react-router-dom'
 import { AddImage } from '../../components/AddImage'
 import { IAlert } from '../../interfaces/IAlert'
 import { IImage } from '../../interfaces/IImage'
+import { Search } from '../../components/Search'
 
 interface Props {
   setAlert: React.Dispatch<React.SetStateAction<IAlert>>
   images: IImage[]
   setImages: React.Dispatch<React.SetStateAction<IImage[]>>
+  setSearchResults: React.Dispatch<React.SetStateAction<IImage[]>>
 }
 
 const Navigation = (props: Props): JSX.Element => {
-  const { setAlert, images, setImages } = props
+  const { setAlert, images, setImages, setSearchResults } = props
 
   const [showMenu, setShowMenu] = useState<boolean>(false)
 
@@ -37,12 +39,7 @@ const Navigation = (props: Props): JSX.Element => {
               <source media='(min-width:375px )' srcSet={logoIconMobile} />
               <img src={logoIconMobile} />
             </picture>
-            <input
-              className='border border-light-gray rounded-md p-2 focus:outline-none focus:border-black bg-magnifying-glass bg-no-repeat bg-w-20
-              bg-custom-position pl-12 w-3/4'
-              type='text'
-              placeholder='Search by name'
-            />
+            <Search images={images} setSearchResults={setSearchResults} />
           </div>
           <button onClick={() => setShowMenu(!showMenu)} className='outline-none lg:hidden'>
             <img src={showMenu ? xMarkIcon : barsIcon} width={30} />

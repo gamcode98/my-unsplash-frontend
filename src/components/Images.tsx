@@ -1,25 +1,30 @@
 /* eslint-disable react/jsx-indent */
 import { IImage } from '../interfaces/IImage'
 import { Image } from './Image'
+import { ImageNotFound } from './ImageNotFound'
 
 interface Props {
   handleOpenModal: (param: string) => void
-  images: IImage[]
+  searchResults: IImage[]
 }
 
 const Images = (props: Props): JSX.Element => {
-  const { handleOpenModal, images } = props
+  const { handleOpenModal, searchResults } = props
 
   return (
-     <>
-      {images.map((image) => (
-        <Image
-          key={image._id}
-          image={image}
-          handleOpenModal={handleOpenModal}
-        />
-      ))}
-     </>
+    <>
+      {searchResults.length === 0
+        ? <ImageNotFound />
+        : <>
+          {searchResults.map((image) => (
+            <Image
+              key={image._id}
+              image={image}
+              handleOpenModal={handleOpenModal}
+            />
+          ))}
+          </>}
+    </>
 
   )
 }
