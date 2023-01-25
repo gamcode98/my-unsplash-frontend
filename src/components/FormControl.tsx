@@ -4,7 +4,7 @@ interface Props extends UseControllerProps {
   labelId?: string
   typeOfInput: string
   placeholder: string
-  labelText: string
+  labelText?: string
 }
 
 const FormControl = (props: Props): JSX.Element => {

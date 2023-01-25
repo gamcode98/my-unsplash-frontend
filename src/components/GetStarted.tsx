@@ -1,22 +1,59 @@
-import { useState } from 'react'
-import googleIcon from './../assets/google.svg'
-import { Login } from './Login'
+import { useEffect, useState } from 'react'
+import xMarkIcon from './../assets/x-mark.svg'
+import { Account } from './Account'
+import { LoginOrResetPassword } from './LoginOrResetPassword'
+import { LoginWithGoogle } from './LoginWithGoogle'
 import { SignUp } from './SignUp'
 
-const GetStarted = (): JSX.Element => {
+interface Props {
+  loginIsPressed?: boolean
+  handleCloseModal: () => void
+}
+
+const GetStarted = (props: Props): JSX.Element => {
+  const { loginIsPressed, handleCloseModal } = props
+
   const [hasAccount, setHasAccount] = useState<boolean>(false)
+  const [resetPasswordIsPressed, setResetPasswordIsPressed] = useState<boolean>(false)
+  const [isAccountCreated, setIsAccountCreated] = useState<boolean>(false)
+  const [toggle, setToggle] = useState<boolean>(false)
+  const [isLoading, setIsloading] = useState<boolean>(false)
+
+  const handleCloseModalBtn = (): void => {
+    setToggle(prev => !prev)
+    handleCloseModal()
+  }
+
+  useEffect(() => {
+    if (!loginIsPressed) {
+      setHasAccount(false)
+      setResetPasswordIsPressed(false)
+    }
+  }, [toggle])
 
   return (
-    <div>
-      <button className='border border-light-gray px-4 py-2 mb-4 rounded-md w-full flex items-center justify-center gap-2 hover:-translate-y-0.5 ease-linear duration-100 will-change-transform'>
-        <img src={googleIcon} width={15} />
-        <span>Continue with Google</span>
+    <>
+      <button
+        onClick={handleCloseModalBtn}
+        disabled={isLoading} className={`absolute top-3 right-3 ${isLoading && 'cursor-wait'}`}
+      >
+        <img src={xMarkIcon} width={20} />
       </button>
-      <p className='text-center text-dark-gray mb-4'>or</p>
-      {hasAccount
-        ? <Login setHasAccount={setHasAccount} />
-        : <SignUp setHasAccount={setHasAccount} />}
-    </div>
+
+      {(!resetPasswordIsPressed || !isAccountCreated) && <LoginWithGoogle isLoading={isLoading} />}
+
+      <Account isLoading={isLoading} setIsloading={setIsloading} setHasAccount={setHasAccount}>
+        {hasAccount || loginIsPressed
+          ? <LoginOrResetPassword
+              resetPasswordIsPressed={resetPasswordIsPressed}
+              setResetPasswordIsPressed={setResetPasswordIsPressed}
+            />
+          : <SignUp
+              isAccountCreated={isAccountCreated}
+              setIsAccountCreated={setIsAccountCreated}
+            />}
+      </Account>
+    </>
   )
 }
 

@@ -51,10 +51,10 @@ function App (): JSX.Element {
   return (
     <Routes>
       <Route path='/' element={<Navigation setAlert={setAlert} images={images} setImages={setImages} setSearchResults={setSearchResults} />}>
-        <Route
+        {/* <Route
           path='/'
           element={<MySpace alert={alert} setAlert={setAlert} images={images} setImages={setImages} searchResults={searchResults} />}
-        />
+        /> */}
         <Route path='/' element={<Home />} />
       </Route>
     </Routes>
