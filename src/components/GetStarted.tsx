@@ -14,8 +14,8 @@ const GetStarted = (props: Props): JSX.Element => {
   const { loginIsPressed, handleCloseModal } = props
 
   const [hasAccount, setHasAccount] = useState<boolean>(false)
-  const [resetPasswordIsPressed, setResetPasswordIsPressed] = useState<boolean>(false)
-  const [isAccountCreated, setIsAccountCreated] = useState<boolean>(false)
+  const [hideLogginWithGoogle, setHideLogginWithGoogle] = useState<boolean>(false)
+  const [isAccountCreated, setIsAccountCreated] = useState(false)
   const [toggle, setToggle] = useState<boolean>(false)
   const [isLoading, setIsloading] = useState<boolean>(false)
 
@@ -27,7 +27,8 @@ const GetStarted = (props: Props): JSX.Element => {
   useEffect(() => {
     if (!loginIsPressed) {
       setHasAccount(false)
-      setResetPasswordIsPressed(false)
+      setHideLogginWithGoogle(false)
+      setIsAccountCreated(false)
     }
   }, [toggle])
 
@@ -40,17 +41,18 @@ const GetStarted = (props: Props): JSX.Element => {
         <img src={xMarkIcon} width={20} />
       </button>
 
-      {(!resetPasswordIsPressed || !isAccountCreated) && <LoginWithGoogle isLoading={isLoading} />}
+      {!hideLogginWithGoogle && <LoginWithGoogle isLoading={isLoading} />}
 
       <Account isLoading={isLoading} setIsloading={setIsloading} setHasAccount={setHasAccount}>
         {hasAccount || loginIsPressed
           ? <LoginOrResetPassword
-              resetPasswordIsPressed={resetPasswordIsPressed}
-              setResetPasswordIsPressed={setResetPasswordIsPressed}
+              hideLogginWithGoogle={hideLogginWithGoogle}
+              setHideLogginWithGoogle={setHideLogginWithGoogle}
             />
           : <SignUp
               isAccountCreated={isAccountCreated}
               setIsAccountCreated={setIsAccountCreated}
+              setHideLogginWithGoogle={setHideLogginWithGoogle}
             />}
       </Account>
     </>

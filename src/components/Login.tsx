@@ -14,7 +14,7 @@ const schema = yup.object({
 
 interface Props {
   setHasAccount?: React.Dispatch<React.SetStateAction<boolean>>
-  setResetPasswordIsPressed: React.Dispatch<React.SetStateAction<boolean>>
+  setHideLogginWithGoogle: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 interface IFormInputs {
@@ -23,7 +23,7 @@ interface IFormInputs {
 }
 
 const Login = (props: Props): JSX.Element => {
-  const { setHasAccount, setResetPasswordIsPressed } = props
+  const { setHasAccount, setHideLogginWithGoogle } = props
   const changeToSignUp = (): void => setHasAccount?.(false)
 
   const { handleSubmit, control, reset } = useForm<IFormInputs>({
@@ -69,7 +69,7 @@ const Login = (props: Props): JSX.Element => {
       <button
         type='button'
         className='text-center mb-4 text-green hover:underline decoration-1 cursor-pointer block mx-auto'
-        onClick={() => setResetPasswordIsPressed(true)}
+        onClick={() => setHideLogginWithGoogle(true)}
       >Reset password
       </button>
       <div className='flex justify-center gap-1'>

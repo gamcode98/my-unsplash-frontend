@@ -1,7 +1,25 @@
+interface Props {
+  setHideLogginWithGoogle: React.Dispatch<React.SetStateAction<boolean>>
+  setIsAccountCreated: React.Dispatch<React.SetStateAction<boolean>>
+}
 
-const AccountCreatedMessage = (): JSX.Element => {
+const AccountCreatedMessage = (props: Props): JSX.Element => {
+  const { setHideLogginWithGoogle, setIsAccountCreated } = props
+
+  const backToLogin = (): void => {
+    setHideLogginWithGoogle(false)
+    setIsAccountCreated(false)
+  }
+
   return (
-    <div>AccountCreatedMessage</div>
+    <div>
+      <h2 className='font-bold text-3xl text-center mb-8'>Your account was <br /> created successfully</h2>
+      <button
+        onClick={backToLogin}
+        className='block mx-auto text-green'
+      >Back to Log in
+      </button>
+    </div>
   )
 }
 

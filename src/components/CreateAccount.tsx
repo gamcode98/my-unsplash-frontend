@@ -18,6 +18,7 @@ interface Props {
   setHasAccount?: React.Dispatch<React.SetStateAction<boolean>>
   isLoading?: boolean
   setIsloading?: React.Dispatch<React.SetStateAction<boolean>>
+  setHideLogginWithGoogle: React.Dispatch<React.SetStateAction<boolean>>
   setIsAccountCreated: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -27,7 +28,7 @@ interface IFormInputs {
 }
 
 const CreateAccount = (props: Props): JSX.Element => {
-  const { setHasAccount, isLoading, setIsloading, setIsAccountCreated } = props
+  const { setHasAccount, isLoading, setIsloading, setHideLogginWithGoogle, setIsAccountCreated } = props
 
   const changeToLogin = (): void => setHasAccount?.(true)
 
@@ -39,8 +40,9 @@ const CreateAccount = (props: Props): JSX.Element => {
 
   const onSubmit: SubmitHandler<IFormInputs> = data => {
     const { email, password } = data
-    setIsloading?.(true)
     console.log({ email }, { password })
+    setHideLogginWithGoogle(true)
+    setIsloading?.(true)
     reset()
     setTimeout(() => {
       setIsloading?.(false)

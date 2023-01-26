@@ -17,13 +17,13 @@ interface IFormInputs {
 }
 
 interface Props {
-  setResetPasswordIsPressed?: React.Dispatch<React.SetStateAction<boolean>>
+  setHideLogginWithGoogle?: React.Dispatch<React.SetStateAction<boolean>>
   setEmailSent?: React.Dispatch<React.SetStateAction<boolean>>
   setEmail: React.Dispatch<React.SetStateAction<string>>
 }
 
 const SendEmail = (props: Props): JSX.Element => {
-  const { setResetPasswordIsPressed, setEmailSent, setEmail } = props
+  const { setHideLogginWithGoogle, setEmailSent, setEmail } = props
 
   const [showLoader, setShowLoader] = useState<boolean>(false)
 
@@ -65,7 +65,7 @@ const SendEmail = (props: Props): JSX.Element => {
             placeholder='Email'
           />
           <button className='bg-black font-bold text-white p-2 rounded-md w-full mb-4 hover:-translate-y-0.5 ease-linear duration-100 will-change-transform'>Reset password</button>
-          <button type='button' className='mx-auto block' onClick={() => setResetPasswordIsPressed?.(false)}>
+          <button type='button' className='mx-auto block' onClick={() => setHideLogginWithGoogle?.(false)}>
             Cancel
           </button>
         </form>

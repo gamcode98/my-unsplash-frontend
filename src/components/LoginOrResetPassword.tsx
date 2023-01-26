@@ -7,27 +7,25 @@ import { SendEmail } from './SendEmail'
 
 interface Props {
   setHasAccount?: React.Dispatch<React.SetStateAction<boolean>>
-  resetPasswordIsPressed: boolean
-  setResetPasswordIsPressed: React.Dispatch<React.SetStateAction<boolean>>
+  hideLogginWithGoogle: boolean
+  setHideLogginWithGoogle: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const LoginOrResetPassword = (props: Props): JSX.Element => {
-  const { setHasAccount, resetPasswordIsPressed, setResetPasswordIsPressed } = props
+  const { setHasAccount, hideLogginWithGoogle, setHideLogginWithGoogle } = props
 
   const [emailSent, setEmailSent] = useState<boolean>(false)
   const [email, setEmail] = useState<string>('')
 
   return (
-    <>
-      {resetPasswordIsPressed
-        ? <ResetPassword
-            setResetPasswordIsPressed={setResetPasswordIsPressed}
-            setEmailSent={setEmailSent}
-          >
+    hideLogginWithGoogle
+      ? <ResetPassword
+          setHideLogginWithGoogle={setHideLogginWithGoogle}
+          setEmailSent={setEmailSent}
+        >
           {emailSent ? <EmailMessage email={email} /> : <SendEmail setEmail={setEmail} />}
-          </ResetPassword>
-        : <Login setHasAccount={setHasAccount} setResetPasswordIsPressed={setResetPasswordIsPressed} />}
-    </>
+        </ResetPassword>
+      : <Login setHasAccount={setHasAccount} setHideLogginWithGoogle={setHideLogginWithGoogle} />
   )
 }
 
