@@ -1,14 +1,16 @@
+import { AuthenticationNavigation } from '../types/AuthenticationNavigation'
+
 interface Props {
-  setHideLoginWithGoogle: React.Dispatch<React.SetStateAction<boolean>>
-  setIsAccountCreated: React.Dispatch<React.SetStateAction<boolean>>
+  setHideLoginWithGoogle?: React.Dispatch<React.SetStateAction<boolean>>
+  setAuthNavigation?: React.Dispatch<React.SetStateAction<AuthenticationNavigation>>
 }
 
 const AccountCreatedMessage = (props: Props): JSX.Element => {
-  const { setHideLoginWithGoogle, setIsAccountCreated } = props
+  const { setHideLoginWithGoogle, setAuthNavigation } = props
 
   const backToLogin = (): void => {
-    setHideLoginWithGoogle(false)
-    setIsAccountCreated(false)
+    setHideLoginWithGoogle?.(false)
+    setAuthNavigation?.('login')
   }
 
   return (

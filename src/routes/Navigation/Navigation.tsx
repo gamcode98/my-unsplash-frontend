@@ -38,7 +38,6 @@ const Navigation = (props: Props): JSX.Element => {
     modalGetStarted.current?.showModal()
     if (isPressed) {
       setLoginIsPressed(isPressed)
-      setTimeout(() => setLoginIsPressed(false))
     }
   }
 

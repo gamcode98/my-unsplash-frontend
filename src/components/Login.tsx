@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { FormControl } from './FormControl'
 import loaderIcon from './../assets/ball-triangle.svg'
+import { AuthenticationNavigation } from '../types/AuthenticationNavigation'
 
 const schema = yup.object({
   email: yup
@@ -15,10 +16,10 @@ const schema = yup.object({
 }).required()
 
 interface Props {
-  setHasAccount?: React.Dispatch<React.SetStateAction<boolean>>
-  setHideLoginWithGoogle: React.Dispatch<React.SetStateAction<boolean>>
+  setHideLoginWithGoogle?: React.Dispatch<React.SetStateAction<boolean>>
   isLoading?: boolean
   setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>
+  setAuthNavigation?: React.Dispatch<React.SetStateAction<AuthenticationNavigation>>
 }
 
 interface IFormInputs {
@@ -27,8 +28,14 @@ interface IFormInputs {
 }
 
 const Login = (props: Props): JSX.Element => {
-  const { setHasAccount, setHideLoginWithGoogle, isLoading, setIsLoading } = props
-  const changeToSignUp = (): void => setHasAccount?.(false)
+  const { setHideLoginWithGoogle, isLoading, setIsLoading, setAuthNavigation } = props
+
+  const goToSignup = (): void => setAuthNavigation?.('signup')
+
+  const goToResetPassword = (): void => {
+    setHideLoginWithGoogle?.(true)
+    setAuthNavigation?.('resetPassword')
+  }
 
   const { handleSubmit, control, reset } = useForm<IFormInputs>({
     defaultValues: { email: '', password: '' },
@@ -39,10 +46,11 @@ const Login = (props: Props): JSX.Element => {
   const onSubmit: SubmitHandler<IFormInputs> = data => {
     const { email, password } = data
     setIsLoading?.(true)
-    setHideLoginWithGoogle(true)
+    setHideLoginWithGoogle?.(true)
     console.log({ email }, { password })
     reset()
     setTimeout(() => {
+      setHideLoginWithGoogle?.(false)
       setIsLoading?.(false)
     }, 3000)
   }
@@ -73,7 +81,7 @@ const Login = (props: Props): JSX.Element => {
         <button
           type='button'
           className='text-center mb-4 text-green hover:underline decoration-1 cursor-pointer block mx-auto'
-          onClick={() => setHideLoginWithGoogle(true)}
+          onClick={goToResetPassword}
         >Reset password
         </button>
         <div className='flex justify-center gap-1'>
@@ -81,7 +89,7 @@ const Login = (props: Props): JSX.Element => {
           <button
             type='button'
             className='text-green hover:underline decoration-1 cursor-pointer'
-            onClick={changeToSignUp}
+            onClick={goToSignup}
           >Create one
           </button>
         </div>

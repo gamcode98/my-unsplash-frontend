@@ -4,7 +4,12 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { FormControl } from './FormControl'
 import loaderIcon from './../assets/ball-triangle.svg'
-import { useState } from 'react'
+import { AuthenticationNavigation } from '../types/AuthenticationNavigation'
+
+interface Email {
+  emailSent: boolean
+  emailAddress: string
+}
 
 const schema = yup.object({
   email: yup
@@ -17,19 +22,15 @@ interface IFormInputs {
 }
 
 interface Props {
-  setHasAccount?: React.Dispatch<React.SetStateAction<boolean>>
-  setHideLogginWithGoogle?: React.Dispatch<React.SetStateAction<boolean>>
-  setEmailSent?: React.Dispatch<React.SetStateAction<boolean>>
-  setShowLogin?: React.Dispatch<React.SetStateAction<boolean>>
-  setEmail: React.Dispatch<React.SetStateAction<string>>
+  setHideLoginWithGoogle?: React.Dispatch<React.SetStateAction<boolean>>
+  setEmail: React.Dispatch<React.SetStateAction<Email>>
+  setAuthNavigation?: React.Dispatch<React.SetStateAction<AuthenticationNavigation>>
+  isLoading?: boolean
+  setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const SendEmail = (props: Props): JSX.Element => {
-  const { setHasAccount, setHideLogginWithGoogle, setEmailSent, setShowLogin, setEmail } = props
-
-  console.log({ props })
-
-  const [showLoader, setShowLoader] = useState<boolean>(false)
+  const { setHideLoginWithGoogle, setEmail, setAuthNavigation, isLoading, setIsLoading } = props
 
   const { handleSubmit, control, reset } = useForm<IFormInputs>({
     defaultValues: { email: '' },
@@ -39,28 +40,21 @@ const SendEmail = (props: Props): JSX.Element => {
 
   const onSubmit: SubmitHandler<IFormInputs> = data => {
     const { email } = data
-    // setIsloading(true)
-    console.log({ email })
     reset()
-    setShowLoader(true)
+    setIsLoading?.(true)
     setTimeout(() => {
-      // setIsloading(false)
-      // setAlert({ status: 'success', message: 'Image added successfully', show: true })
-      // handleCloseModal()
-      console.log('closed')
-      setEmail(email)
-      setEmailSent?.(true)
-      setShowLoader(false)
+      setEmail({ emailSent: true, emailAddress: email })
+      setIsLoading?.(false)
     }, 3000)
   }
 
   const goBackToLogin = (): void => {
-    // setHideLogginWithGoogle?.(false)
-    setShowLogin?.(true)
+    setHideLoginWithGoogle?.(false)
+    setAuthNavigation?.('login')
   }
 
   return (
-    showLoader
+    isLoading
       ? <img src={loaderIcon} width={50} className='block mx-auto' />
       : <div>
         <h2 className='font-bold text-3xl text-center mb-8'>Enter your email to <br /> reset password</h2>

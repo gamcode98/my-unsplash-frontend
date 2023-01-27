@@ -1,9 +1,12 @@
 import { useState } from 'react'
+import { AuthenticationNavigation } from '../types/AuthenticationNavigation'
 import xMarkIcon from './../assets/x-mark.svg'
-import { Account } from './Account'
-import { LoginOrResetPassword } from './LoginOrResetPassword'
+import AccountCreatedMessage from './AccountCreatedMessage'
+import { Authentication } from './Authentication'
+import { Login } from './Login'
 import { LoginWithGoogle } from './LoginWithGoogle'
-import { SignUp } from './SignUp'
+import { ResetPassword } from './ResetPassword'
+import { Signup } from './Signup'
 
 interface Props {
   loginIsPressed?: boolean
@@ -13,15 +16,20 @@ interface Props {
 const GetStarted = (props: Props): JSX.Element => {
   const { loginIsPressed, handleCloseModal } = props
 
-  const [hasAccount, setHasAccount] = useState<boolean>(false)
   const [hideLoginWithGoogle, setHideLoginWithGoogle] = useState<boolean>(false)
-  const [isAccountCreated, setIsAccountCreated] = useState(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [authNavigation, setAuthNavigation] = useState<AuthenticationNavigation>(loginIsPressed !== undefined ? 'login' : 'signup')
+
+  const authentication = {
+    login: <Login />,
+    signup: <Signup />,
+    accountCreatedMessage: <AccountCreatedMessage />,
+    resetPassword: <ResetPassword />
+  }
 
   const handleCloseModalBtn = (): void => {
-    setHasAccount(false)
+    setAuthNavigation('signup')
     setHideLoginWithGoogle(false)
-    setIsAccountCreated(false)
     handleCloseModal()
   }
 
@@ -36,18 +44,14 @@ const GetStarted = (props: Props): JSX.Element => {
 
       {!hideLoginWithGoogle && <LoginWithGoogle isLoading={isLoading} />}
 
-      <Account isLoading={isLoading} setIsLoading={setIsLoading} setHasAccount={setHasAccount}>
-        {hasAccount || loginIsPressed
-          ? <LoginOrResetPassword
-              hideLoginWithGoogle={hideLoginWithGoogle}
-              setHideLoginWithGoogle={setHideLoginWithGoogle}
-            />
-          : <SignUp
-              isAccountCreated={isAccountCreated}
-              setIsAccountCreated={setIsAccountCreated}
-              setHideLoginWithGoogle={setHideLoginWithGoogle}
-            />}
-      </Account>
+      <Authentication
+        isLoading={isLoading}
+        setIsLoading={setIsLoading}
+        setAuthNavigation={setAuthNavigation}
+        setHideLoginWithGoogle={setHideLoginWithGoogle}
+      >
+        {authentication[authNavigation as keyof typeof authentication] || <Signup />}
+      </Authentication>
     </>
   )
 }

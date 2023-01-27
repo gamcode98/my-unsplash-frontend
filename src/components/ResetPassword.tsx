@@ -1,22 +1,43 @@
-import React from 'react'
+/* eslint-disable react/jsx-indent */
+import { useState } from 'react'
+import { AuthenticationNavigation } from '../types/AuthenticationNavigation'
+import { EmailMessage } from './EmailMessage'
+import { SendEmail } from './SendEmail'
+
+interface Email {
+  emailSent: boolean
+  emailAddress: string
+}
 
 interface Props {
-  children: JSX.Element | JSX.Element[]
-  setHasAccount?: React.Dispatch<React.SetStateAction<boolean>>
-  setEmailSent: React.Dispatch<React.SetStateAction<boolean>>
-  setHideLoginWithGoogle: React.Dispatch<React.SetStateAction<boolean>>
-  setShowLogin: React.Dispatch<React.SetStateAction<boolean>>
+  isLoading?: boolean
+  setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>
+  setHideLoginWithGoogle?: React.Dispatch<React.SetStateAction<boolean>>
+  setAuthNavigation?: React.Dispatch<React.SetStateAction<AuthenticationNavigation>>
 }
 
 const ResetPassword = (props: Props): JSX.Element => {
-  const { children, setHasAccount, setEmailSent, setHideLoginWithGoogle, setShowLogin } = props
+  const { isLoading, setIsLoading, setHideLoginWithGoogle, setAuthNavigation } = props
+
+  const [email, setEmail] = useState<Email>({
+    emailSent: false,
+    emailAddress: ''
+  })
 
   return (
-    <div>
-      {React.Children
-        .toArray(children)
-        .map((child: any) => React.cloneElement(child, { setHasAccount, setEmailSent, setHideLoginWithGoogle, setShowLogin }))}
-    </div>
+    email.emailSent
+      ? <EmailMessage
+          emailAddress={email.emailAddress}
+          setHideLoginWithGoogle={setHideLoginWithGoogle}
+          setAuthNavigation={setAuthNavigation}
+        />
+      : <SendEmail
+          setHideLoginWithGoogle={setHideLoginWithGoogle}
+          setEmail={setEmail}
+          setAuthNavigation={setAuthNavigation}
+          isLoading={isLoading}
+          setIsLoading={setIsLoading}
+        />
   )
 }
 

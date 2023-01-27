@@ -4,6 +4,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import loaderIcon from './../assets/ball-triangle.svg'
 import { FormControl } from './FormControl'
+import { AuthenticationNavigation } from '../types/AuthenticationNavigation'
 
 const schema = yup.object({
   email: yup
@@ -15,11 +16,10 @@ const schema = yup.object({
 }).required()
 
 interface Props {
-  setHasAccount?: React.Dispatch<React.SetStateAction<boolean>>
   isLoading?: boolean
   setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>
-  setHideLoginWithGoogle: React.Dispatch<React.SetStateAction<boolean>>
-  setIsAccountCreated: React.Dispatch<React.SetStateAction<boolean>>
+  setHideLoginWithGoogle?: React.Dispatch<React.SetStateAction<boolean>>
+  setAuthNavigation?: React.Dispatch<React.SetStateAction<AuthenticationNavigation>>
 }
 
 interface IFormInputs {
@@ -27,10 +27,10 @@ interface IFormInputs {
   password: string
 }
 
-const CreateAccount = (props: Props): JSX.Element => {
-  const { setHasAccount, isLoading, setIsLoading, setHideLoginWithGoogle, setIsAccountCreated } = props
+const Signup = (props: Props): JSX.Element => {
+  const { isLoading, setIsLoading, setHideLoginWithGoogle, setAuthNavigation } = props
 
-  const changeToLogin = (): void => setHasAccount?.(true)
+  const changeToLogin = (): void => setAuthNavigation?.('login')
 
   const { handleSubmit, control, reset } = useForm<IFormInputs>({
     defaultValues: { email: '', password: '' },
@@ -41,12 +41,12 @@ const CreateAccount = (props: Props): JSX.Element => {
   const onSubmit: SubmitHandler<IFormInputs> = data => {
     const { email, password } = data
     console.log({ email }, { password })
-    setHideLoginWithGoogle(true)
+    setHideLoginWithGoogle?.(true)
     setIsLoading?.(true)
     reset()
     setTimeout(() => {
       setIsLoading?.(false)
-      setIsAccountCreated(true)
+      setAuthNavigation?.('accountCreatedMessage')
     }, 3000)
   }
 
@@ -90,4 +90,4 @@ const CreateAccount = (props: Props): JSX.Element => {
   )
 }
 
-export { CreateAccount }
+export { Signup }
