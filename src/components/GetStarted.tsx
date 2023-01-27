@@ -20,17 +20,17 @@ const GetStarted = (props: Props): JSX.Element => {
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [authNavigation, setAuthNavigation] = useState<AuthenticationNavigation>(loginIsPressed !== undefined ? 'login' : 'signup')
 
-  const authentication = {
-    login: <Login />,
-    signup: <Signup />,
-    accountCreatedMessage: <AccountCreatedMessage />,
-    resetPassword: <ResetPassword />
-  }
-
   const handleCloseModalBtn = (): void => {
     setAuthNavigation('signup')
     setHideLoginWithGoogle(false)
     handleCloseModal()
+  }
+
+  const authentication = {
+    login: <Login handleCloseModalBtn={handleCloseModalBtn} />,
+    signup: <Signup />,
+    accountCreatedMessage: <AccountCreatedMessage />,
+    resetPassword: <ResetPassword />
   }
 
   return (

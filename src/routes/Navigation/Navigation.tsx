@@ -72,15 +72,18 @@ const Navigation = (props: Props): JSX.Element => {
               >Add a photo
               </button>}
 
-            <li className='hover:border-b-2 cursor-pointer' onClick={() => handleOpenModalGetStarted(true)}>
-              <span>Log in</span>
-            </li>
+            {currentUser === null &&
+              <li className='hover:border-b-2 cursor-pointer' onClick={() => handleOpenModalGetStarted(true)}>
+                <span>Log in</span>
+              </li>}
 
-            <button
-              className='bg-green text-white font-bold px-4 py-2 rounded-lg block mx-auto lg:mx-0 lg:px-8 hover:-translate-y-0.5 ease-linear duration-100 will-change-transform'
-              onClick={() => handleOpenModalGetStarted()}
-            >Get started
-            </button>
+            {currentUser === null &&
+              <button
+                className='bg-green text-white font-bold px-4 py-2 rounded-lg block mx-auto lg:mx-0 lg:px-8 hover:-translate-y-0.5 ease-linear duration-100 will-change-transform'
+                onClick={() => handleOpenModalGetStarted()}
+              >Get started
+              </button>}
+
           </ul>
         </nav>
       </header>

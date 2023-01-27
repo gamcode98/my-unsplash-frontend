@@ -5,6 +5,8 @@ import * as yup from 'yup'
 import { FormControl } from './FormControl'
 import loaderIcon from './../assets/ball-triangle.svg'
 import { AuthenticationNavigation } from '../types/AuthenticationNavigation'
+import { useNavigate } from 'react-router-dom'
+import useCurrentUser from '../hooks/useCurrentUser'
 
 const schema = yup.object({
   email: yup
@@ -20,6 +22,7 @@ interface Props {
   isLoading?: boolean
   setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>
   setAuthNavigation?: React.Dispatch<React.SetStateAction<AuthenticationNavigation>>
+  handleCloseModalBtn: () => void
 }
 
 interface IFormInputs {
@@ -28,7 +31,11 @@ interface IFormInputs {
 }
 
 const Login = (props: Props): JSX.Element => {
-  const { setHideLoginWithGoogle, isLoading, setIsLoading, setAuthNavigation } = props
+  const { setHideLoginWithGoogle, isLoading, setIsLoading, setAuthNavigation, handleCloseModalBtn } = props
+
+  const { setCurrentUser } = useCurrentUser()
+
+  const navigate = useNavigate()
 
   const goToSignup = (): void => setAuthNavigation?.('signup')
 
@@ -52,6 +59,9 @@ const Login = (props: Props): JSX.Element => {
     setTimeout(() => {
       setHideLoginWithGoogle?.(false)
       setIsLoading?.(false)
+      setCurrentUser({ _id: crypto.randomUUID(), email })
+      handleCloseModalBtn()
+      navigate('/my-space')
     }, 3000)
   }
 
