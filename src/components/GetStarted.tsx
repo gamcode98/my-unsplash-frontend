@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import xMarkIcon from './../assets/x-mark.svg'
 import { Account } from './Account'
 import { LoginOrResetPassword } from './LoginOrResetPassword'
@@ -14,23 +14,16 @@ const GetStarted = (props: Props): JSX.Element => {
   const { loginIsPressed, handleCloseModal } = props
 
   const [hasAccount, setHasAccount] = useState<boolean>(false)
-  const [hideLogginWithGoogle, setHideLogginWithGoogle] = useState<boolean>(false)
+  const [hideLoginWithGoogle, setHideLoginWithGoogle] = useState<boolean>(false)
   const [isAccountCreated, setIsAccountCreated] = useState(false)
-  const [toggle, setToggle] = useState<boolean>(false)
-  const [isLoading, setIsloading] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const handleCloseModalBtn = (): void => {
-    setToggle(prev => !prev)
+    setHasAccount(false)
+    setHideLoginWithGoogle(false)
+    setIsAccountCreated(false)
     handleCloseModal()
   }
-
-  useEffect(() => {
-    if (!loginIsPressed) {
-      setHasAccount(false)
-      setHideLogginWithGoogle(false)
-      setIsAccountCreated(false)
-    }
-  }, [toggle])
 
   return (
     <>
@@ -41,18 +34,18 @@ const GetStarted = (props: Props): JSX.Element => {
         <img src={xMarkIcon} width={20} />
       </button>
 
-      {!hideLogginWithGoogle && <LoginWithGoogle isLoading={isLoading} />}
+      {!hideLoginWithGoogle && <LoginWithGoogle isLoading={isLoading} />}
 
-      <Account isLoading={isLoading} setIsloading={setIsloading} setHasAccount={setHasAccount}>
+      <Account isLoading={isLoading} setIsLoading={setIsLoading} setHasAccount={setHasAccount}>
         {hasAccount || loginIsPressed
           ? <LoginOrResetPassword
-              hideLogginWithGoogle={hideLogginWithGoogle}
-              setHideLogginWithGoogle={setHideLogginWithGoogle}
+              hideLoginWithGoogle={hideLoginWithGoogle}
+              setHideLoginWithGoogle={setHideLoginWithGoogle}
             />
           : <SignUp
               isAccountCreated={isAccountCreated}
               setIsAccountCreated={setIsAccountCreated}
-              setHideLogginWithGoogle={setHideLogginWithGoogle}
+              setHideLoginWithGoogle={setHideLoginWithGoogle}
             />}
       </Account>
     </>

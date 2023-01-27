@@ -17,13 +17,17 @@ interface IFormInputs {
 }
 
 interface Props {
+  setHasAccount?: React.Dispatch<React.SetStateAction<boolean>>
   setHideLogginWithGoogle?: React.Dispatch<React.SetStateAction<boolean>>
   setEmailSent?: React.Dispatch<React.SetStateAction<boolean>>
+  setShowLogin?: React.Dispatch<React.SetStateAction<boolean>>
   setEmail: React.Dispatch<React.SetStateAction<string>>
 }
 
 const SendEmail = (props: Props): JSX.Element => {
-  const { setHideLogginWithGoogle, setEmailSent, setEmail } = props
+  const { setHasAccount, setHideLogginWithGoogle, setEmailSent, setShowLogin, setEmail } = props
+
+  console.log({ props })
 
   const [showLoader, setShowLoader] = useState<boolean>(false)
 
@@ -50,6 +54,11 @@ const SendEmail = (props: Props): JSX.Element => {
     }, 3000)
   }
 
+  const goBackToLogin = (): void => {
+    // setHideLogginWithGoogle?.(false)
+    setShowLogin?.(true)
+  }
+
   return (
     showLoader
       ? <img src={loaderIcon} width={50} className='block mx-auto' />
@@ -65,7 +74,7 @@ const SendEmail = (props: Props): JSX.Element => {
             placeholder='Email'
           />
           <button className='bg-black font-bold text-white p-2 rounded-md w-full mb-4 hover:-translate-y-0.5 ease-linear duration-100 will-change-transform'>Reset password</button>
-          <button type='button' className='mx-auto block' onClick={() => setHideLogginWithGoogle?.(false)}>
+          <button type='button' className='mx-auto block' onClick={goBackToLogin}>
             Cancel
           </button>
         </form>

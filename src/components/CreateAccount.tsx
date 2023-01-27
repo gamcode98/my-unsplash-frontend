@@ -17,8 +17,8 @@ const schema = yup.object({
 interface Props {
   setHasAccount?: React.Dispatch<React.SetStateAction<boolean>>
   isLoading?: boolean
-  setIsloading?: React.Dispatch<React.SetStateAction<boolean>>
-  setHideLogginWithGoogle: React.Dispatch<React.SetStateAction<boolean>>
+  setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>
+  setHideLoginWithGoogle: React.Dispatch<React.SetStateAction<boolean>>
   setIsAccountCreated: React.Dispatch<React.SetStateAction<boolean>>
 }
 
@@ -28,7 +28,7 @@ interface IFormInputs {
 }
 
 const CreateAccount = (props: Props): JSX.Element => {
-  const { setHasAccount, isLoading, setIsloading, setHideLogginWithGoogle, setIsAccountCreated } = props
+  const { setHasAccount, isLoading, setIsLoading, setHideLoginWithGoogle, setIsAccountCreated } = props
 
   const changeToLogin = (): void => setHasAccount?.(true)
 
@@ -41,11 +41,11 @@ const CreateAccount = (props: Props): JSX.Element => {
   const onSubmit: SubmitHandler<IFormInputs> = data => {
     const { email, password } = data
     console.log({ email }, { password })
-    setHideLogginWithGoogle(true)
-    setIsloading?.(true)
+    setHideLoginWithGoogle(true)
+    setIsLoading?.(true)
     reset()
     setTimeout(() => {
-      setIsloading?.(false)
+      setIsLoading?.(false)
       setIsAccountCreated(true)
     }, 3000)
   }

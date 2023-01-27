@@ -1,13 +1,13 @@
 interface Props {
-  setHideLogginWithGoogle: React.Dispatch<React.SetStateAction<boolean>>
+  setHideLoginWithGoogle: React.Dispatch<React.SetStateAction<boolean>>
   setIsAccountCreated: React.Dispatch<React.SetStateAction<boolean>>
 }
 
 const AccountCreatedMessage = (props: Props): JSX.Element => {
-  const { setHideLogginWithGoogle, setIsAccountCreated } = props
+  const { setHideLoginWithGoogle, setIsAccountCreated } = props
 
   const backToLogin = (): void => {
-    setHideLogginWithGoogle(false)
+    setHideLoginWithGoogle(false)
     setIsAccountCreated(false)
   }
 
