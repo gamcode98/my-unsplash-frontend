@@ -1,10 +1,12 @@
 import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom'
 import useCurrentUser from '../../hooks/useCurrentUser'
 import chevrondownIcon from './../../assets/chevron-down.svg'
 import settingsIcon from './../../assets/settings.svg'
 import logoutIcon from './../../assets/logout.svg'
 import uploadIcon from './../../assets/upload.svg'
+import galleryIcon from './../../assets/gallery.svg'
+import { URLS } from '../../enums/urls'
 
 interface Props {
   handleOpenModalAddImage: () => void
@@ -13,9 +15,12 @@ interface Props {
 const UserActions = (props: Props): JSX.Element => {
   const { handleOpenModalAddImage } = props
 
-  const { setCurrentUser } = useCurrentUser()
-
   const navigate = useNavigate()
+  const location = useLocation()
+
+  const currentUrl = location.pathname
+
+  const { setCurrentUser } = useCurrentUser()
 
   const [toggle, setToggle] = useState<boolean>(false)
 
@@ -26,6 +31,24 @@ const UserActions = (props: Props): JSX.Element => {
   const handleLogout = (): void => {
     setCurrentUser(null)
     navigate('/')
+  }
+
+  const goToSettings = (): void => {
+    setToggle(prev => !prev)
+    navigate('/settings')
+  }
+
+  const goToGallery = (): void => {
+    setToggle(prev => !prev)
+    navigate('/gallery')
+  }
+
+  const openModal = (): void => {
+    setToggle(prev => !prev)
+    if (currentUrl === URLS.SETTINGS) {
+      navigate('/gallery')
+    }
+    handleOpenModalAddImage()
   }
 
   return (
@@ -45,13 +68,23 @@ const UserActions = (props: Props): JSX.Element => {
       <div className={`absolute right-0 top-14 bg-white shadow-md rounded-md
             ${toggle ? 'block' : 'hidden'}`}
       >
-        <button className='flex items-center gap-2 mb-2 border-b border-b-light-gray p-4 pr-10'>
+        <button
+          className='flex items-center gap-2 mb-2 border-b border-b-light-gray p-4 pr-10'
+          onClick={goToSettings}
+        >
           <img src={settingsIcon} width={20} />
           <span>Settings</span>
         </button>
         <button
+          className='flex items-center gap-2 mb-2 border-b border-b-light-gray p-4 pr-10'
+          onClick={goToGallery}
+        >
+          <img src={galleryIcon} width={20} />
+          <span>Gallery</span>
+        </button>
+        <button
           className='md:hidden flex items-center gap-2 p-4 border-b border-b-light-gray pr-5'
-          onClick={handleOpenModalAddImage}
+          onClick={openModal}
         >
           <img src={uploadIcon} width={20} />
           <span>Add a photo</span>

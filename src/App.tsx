@@ -6,6 +6,7 @@ import { IImage } from './interfaces/IImage'
 import { Home } from './routes/Home'
 import MySpace from './routes/MySpace'
 import { Navigation } from './routes/Navigation'
+import { Settings } from './routes/Settings'
 
 const fakeImages: IImage[] = [
   {
@@ -63,7 +64,7 @@ function App (): JSX.Element {
       >
         <Route path='/' element={<Home />} />
         <Route
-          path='/my-space'
+          path='/gallery'
           element={
             <MySpace
               alert={alert}
@@ -73,6 +74,7 @@ function App (): JSX.Element {
               searchResults={searchResults}
             />}
         />
+        <Route path='/settings' element={<Settings />} />
       </Route>
     </Routes>
 

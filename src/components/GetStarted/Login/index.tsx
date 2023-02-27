@@ -61,7 +61,7 @@ const Login = (props: Props): JSX.Element => {
       setIsLoading?.(false)
       setCurrentUser({ _id: crypto.randomUUID(), email })
       handleCloseModalBtn()
-      navigate('/my-space')
+      navigate('/gallery')
     }, 3000)
   }
 

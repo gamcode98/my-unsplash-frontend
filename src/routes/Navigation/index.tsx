@@ -1,7 +1,7 @@
 import { useRef, useState } from 'react'
 import logoIconDesktop from './../../assets/my-unsplash-logo-desktop.svg'
 import logoIconMobile from './../../assets/my-unsplash-logo-mobile.svg'
-import { Outlet } from 'react-router-dom'
+import { Outlet, useLocation } from 'react-router-dom'
 import { AddImage } from '../../components/AddImage'
 import { IAlert } from '../../interfaces/IAlert'
 import { IImage } from '../../interfaces/IImage'
@@ -11,6 +11,7 @@ import useCurrentUser from '../../hooks/useCurrentUser'
 import { UserActions } from '../../components/UserActions'
 import { Modal } from '../../components/Modal'
 import { ModalAction } from '../../types'
+import { URLS } from '../../enums/urls'
 
 interface Props {
   setAlert: React.Dispatch<React.SetStateAction<IAlert>>
@@ -21,6 +22,10 @@ interface Props {
 
 const Navigation = (props: Props): JSX.Element => {
   const { setAlert, images, setImages, setSearchResults } = props
+
+  const location = useLocation()
+
+  const currentUrl = location.pathname
 
   const [loginIsPressed, setLoginIsPressed] = useState<boolean>(false)
   const [modalAction, setModalAction] = useState<ModalAction>(null)
@@ -52,12 +57,12 @@ const Navigation = (props: Props): JSX.Element => {
               <source media='(min-width:375px )' srcSet={logoIconMobile} />
               <img src={logoIconMobile} />
             </picture>
-            {currentUser !== null &&
+            {currentUser !== null && currentUrl !== URLS.SETTINGS &&
               <Search images={images} setSearchResults={setSearchResults} />}
           </div>
 
           <div className='flex gap-8'>
-            {currentUser !== null &&
+            {currentUser !== null && currentUrl !== URLS.SETTINGS &&
               <button
                 className='hidden md:block bg-green text-white px-4 py-2 rounded-lg mb-2 lg:mb-0 hover:-translate-y-0.5 ease-linear duration-100 will-change-transform'
                 onClick={handleOpenModalAddImage}
