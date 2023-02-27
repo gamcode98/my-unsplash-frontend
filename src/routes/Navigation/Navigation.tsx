@@ -10,6 +10,8 @@ import { IImage } from '../../interfaces/IImage'
 import { Search } from '../../components/Search'
 import { GetStarted } from '../../components/GetStarted'
 import useCurrentUser from '../../hooks/useCurrentUser'
+import { Logout } from '../../components/Logout'
+import { UserActions } from '../../components/UserActions'
 
 interface Props {
   setAlert: React.Dispatch<React.SetStateAction<IAlert>>
@@ -71,6 +73,9 @@ const Navigation = (props: Props): JSX.Element => {
                 onClick={handleOpenModalAddImage}
               >Add a photo
               </button>}
+
+            {/* {currentUser !== null && <UserActions/>} */}
+            <UserActions />
 
             {currentUser === null &&
               <li className='hover:border-b-2 cursor-pointer' onClick={() => handleOpenModalGetStarted(true)}>
