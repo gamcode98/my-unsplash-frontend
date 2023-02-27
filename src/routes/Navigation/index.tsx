@@ -10,8 +10,9 @@ import { IImage } from '../../interfaces/IImage'
 import { Search } from '../../components/Search'
 import { GetStarted } from '../../components/GetStarted'
 import useCurrentUser from '../../hooks/useCurrentUser'
-import { Logout } from '../../components/Logout'
 import { UserActions } from '../../components/UserActions'
+import { Modal } from '../../components/Modal'
+import { ModalAction } from '../../types'
 
 interface Props {
   setAlert: React.Dispatch<React.SetStateAction<IAlert>>
@@ -25,33 +26,28 @@ const Navigation = (props: Props): JSX.Element => {
 
   const [showMenu, setShowMenu] = useState<boolean>(false)
   const [loginIsPressed, setLoginIsPressed] = useState<boolean>(false)
+  const [modalAction, setModalAction] = useState<ModalAction>(null)
 
   const { currentUser } = useCurrentUser()
 
   const modalAddImage = useRef<HTMLDialogElement | null>(null)
 
-  const modalGetStarted = useRef<HTMLDialogElement | null>(null)
-
   const handleOpenModalAddImage = (): void => {
     modalAddImage.current?.showModal()
   }
 
-  const handleOpenModalGetStarted = (isPressed?: boolean): void => {
-    modalGetStarted.current?.showModal()
+  const handleOpenModalToLogin = (isPressed?: boolean): void => {
     if (isPressed) {
       setLoginIsPressed(isPressed)
+      setModalAction('open')
     }
   }
 
   const handleCloseModalAddImage = (): void => modalAddImage.current?.close()
 
-  const handleCloseModalGetStarted = (): void => {
-    modalGetStarted.current?.close()
-  }
-
   return (
     <>
-      <header className='w-11/12 mx-auto pt-2 mb-8'>
+      <header className='w-11/12 mx-auto pt-2 mb-8 relative z-10'>
         <nav className='flex justify-between items-center relative'>
           <div className='flex gap-4 items-center'>
             <picture>
@@ -59,7 +55,8 @@ const Navigation = (props: Props): JSX.Element => {
               <source media='(min-width:375px )' srcSet={logoIconMobile} />
               <img src={logoIconMobile} />
             </picture>
-            {currentUser !== null && <Search images={images} setSearchResults={setSearchResults} />}
+            {currentUser !== null &&
+              <Search images={images} setSearchResults={setSearchResults} />}
           </div>
           <button onClick={() => setShowMenu(!showMenu)} className='outline-none lg:hidden'>
             <img src={showMenu ? xMarkIcon : barsIcon} width={30} />
@@ -74,18 +71,17 @@ const Navigation = (props: Props): JSX.Element => {
               >Add a photo
               </button>}
 
-            {/* {currentUser !== null && <UserActions/>} */}
-            <UserActions />
+            {currentUser !== null && <UserActions />}
 
             {currentUser === null &&
-              <li className='hover:border-b-2 cursor-pointer' onClick={() => handleOpenModalGetStarted(true)}>
+              <li className='hover:border-b-2 cursor-pointer' onClick={() => handleOpenModalToLogin(true)}>
                 <span>Log in</span>
               </li>}
 
             {currentUser === null &&
               <button
                 className='bg-green text-white font-bold px-4 py-2 rounded-lg block mx-auto lg:mx-0 lg:px-8 hover:-translate-y-0.5 ease-linear duration-100 will-change-transform'
-                onClick={() => handleOpenModalGetStarted()}
+                onClick={() => setModalAction('open')}
               >Get started
               </button>}
 
@@ -93,9 +89,12 @@ const Navigation = (props: Props): JSX.Element => {
         </nav>
       </header>
 
-      <dialog ref={modalGetStarted} className='rounded-md p-8 pt-12 fixed md:w-2/4 lg:w-3/12'>
-        <GetStarted loginIsPressed={loginIsPressed} handleCloseModal={handleCloseModalGetStarted} />
-      </dialog>
+      <Modal modalAction={modalAction}>
+        <GetStarted
+          loginIsPressed={loginIsPressed}
+          setModalAction={setModalAction}
+        />
+      </Modal>
 
       <dialog ref={modalAddImage} className='rounded-md p-6 fixed md:w-2/4 lg:w-1/3'>
         <AddImage

@@ -1,11 +1,11 @@
-import { AuthenticationNavigation } from '../types/AuthenticationNavigation'
+import { AuthenticationNavigation } from '../../../types/AuthenticationNavigation'
 
 interface Props {
   setHideLoginWithGoogle?: React.Dispatch<React.SetStateAction<boolean>>
   setAuthNavigation?: React.Dispatch<React.SetStateAction<AuthenticationNavigation>>
 }
 
-const AccountCreatedMessage = (props: Props): JSX.Element => {
+const Message = (props: Props): JSX.Element => {
   const { setHideLoginWithGoogle, setAuthNavigation } = props
 
   const backToLogin = (): void => {
@@ -25,4 +25,4 @@ const AccountCreatedMessage = (props: Props): JSX.Element => {
   )
 }
 
-export default AccountCreatedMessage
+export { Message }

@@ -2,9 +2,9 @@
 import { Control, SubmitHandler, useForm, FieldValues } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import loaderIcon from './../assets/ball-triangle.svg'
-import { FormControl } from './FormControl'
-import { AuthenticationNavigation } from '../types/AuthenticationNavigation'
+import loaderIcon from './../../../assets/ball-triangle.svg'
+import { FormControl } from '../../FormControl'
+import { AuthenticationNavigation } from '../../../types/AuthenticationNavigation'
 
 const schema = yup.object({
   email: yup
@@ -46,7 +46,7 @@ const Signup = (props: Props): JSX.Element => {
     reset()
     setTimeout(() => {
       setIsLoading?.(false)
-      setAuthNavigation?.('accountCreatedMessage')
+      setAuthNavigation?.('message')
     }, 3000)
   }
 

@@ -1,4 +1,4 @@
-import { AuthenticationNavigation } from '../types/AuthenticationNavigation'
+import { AuthenticationNavigation } from '../../../../types/AuthenticationNavigation'
 
 interface Props {
   emailAddress: string

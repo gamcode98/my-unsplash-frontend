@@ -3,9 +3,9 @@ import { useState } from 'react'
 import { Control, SubmitHandler, useForm, FieldValues } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { FormControl } from './FormControl'
-import { IAlert } from '../interfaces/IAlert'
-import { IImage } from '../interfaces/IImage'
+import { FormControl } from '../FormControl'
+import { IAlert } from '../../interfaces/IAlert'
+import { IImage } from '../../interfaces/IImage'
 
 const schema = yup.object({
   label: yup

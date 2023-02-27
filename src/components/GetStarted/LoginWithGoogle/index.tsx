@@ -1,4 +1,4 @@
-import googleIcon from './../assets/google.svg'
+import googleIcon from './../../../assets/google.svg'
 
 interface Props {
   isLoading: boolean

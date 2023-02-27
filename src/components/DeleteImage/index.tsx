@@ -3,9 +3,9 @@ import { useState } from 'react'
 import { Control, SubmitHandler, useForm, FieldValues } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
-import { FormControl } from './FormControl'
-import { IImage } from '../interfaces/IImage'
-import { IAlert } from '../interfaces/IAlert'
+import { FormControl } from '../FormControl'
+import { IImage } from '../../interfaces/IImage'
+import { IAlert } from '../../interfaces/IAlert'
 
 const schema = yup.object({
   password: yup

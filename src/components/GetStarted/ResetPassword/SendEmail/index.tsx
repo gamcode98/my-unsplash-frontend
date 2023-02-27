@@ -2,9 +2,9 @@
 import { Control, SubmitHandler, useForm, FieldValues } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { FormControl } from './FormControl'
-import loaderIcon from './../assets/ball-triangle.svg'
-import { AuthenticationNavigation } from '../types/AuthenticationNavigation'
+import { FormControl } from '../../../FormControl'
+import loaderIcon from './../../../../assets/ball-triangle.svg'
+import { AuthenticationNavigation } from '../../../../types/AuthenticationNavigation'
 
 interface Email {
   emailSent: boolean

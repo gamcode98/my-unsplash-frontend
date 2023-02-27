@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
-import { IAlert } from '../interfaces/IAlert'
-import checkedIcon from './../assets/checked.svg'
-import failIcon from './../assets/fail.svg'
+import { IAlert } from '../../interfaces/IAlert'
+import checkedIcon from './../../assets/checked.svg'
+import failIcon from './../../assets/fail.svg'
 
 interface Props {
   alert: IAlert

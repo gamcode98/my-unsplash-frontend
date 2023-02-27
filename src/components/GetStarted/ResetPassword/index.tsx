@@ -1,6 +1,6 @@
 /* eslint-disable react/jsx-indent */
 import { useState } from 'react'
-import { AuthenticationNavigation } from '../types/AuthenticationNavigation'
+import { AuthenticationNavigation } from '../../../types/AuthenticationNavigation'
 import { EmailMessage } from './EmailMessage'
 import { SendEmail } from './SendEmail'
 

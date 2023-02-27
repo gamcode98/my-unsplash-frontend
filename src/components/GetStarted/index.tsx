@@ -1,20 +1,21 @@
 import { useState } from 'react'
-import { AuthenticationNavigation } from '../types/AuthenticationNavigation'
-import xMarkIcon from './../assets/x-mark.svg'
-import AccountCreatedMessage from './AccountCreatedMessage'
-import { Authentication } from './Authentication'
+import { AuthenticationNavigation } from '../../types/AuthenticationNavigation'
+import xMarkIcon from './../../assets/x-mark.svg'
+import { Wrapper } from './Wrapper'
 import { Login } from './Login'
 import { LoginWithGoogle } from './LoginWithGoogle'
 import { ResetPassword } from './ResetPassword'
 import { Signup } from './Signup'
+import { Message } from './Message'
+import { ModalAction } from '../../types'
 
 interface Props {
   loginIsPressed?: boolean
-  handleCloseModal: () => void
+  setModalAction: React.Dispatch<React.SetStateAction<ModalAction>>
 }
 
 const GetStarted = (props: Props): JSX.Element => {
-  const { loginIsPressed, handleCloseModal } = props
+  const { loginIsPressed, setModalAction } = props
 
   const [hideLoginWithGoogle, setHideLoginWithGoogle] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -23,13 +24,13 @@ const GetStarted = (props: Props): JSX.Element => {
   const handleCloseModalBtn = (): void => {
     setAuthNavigation('signup')
     setHideLoginWithGoogle(false)
-    handleCloseModal()
+    setModalAction('close')
   }
 
   const authentication = {
     login: <Login handleCloseModalBtn={handleCloseModalBtn} />,
     signup: <Signup />,
-    accountCreatedMessage: <AccountCreatedMessage />,
+    message: <Message />,
     resetPassword: <ResetPassword />
   }
 
@@ -44,14 +45,14 @@ const GetStarted = (props: Props): JSX.Element => {
 
       {!hideLoginWithGoogle && <LoginWithGoogle isLoading={isLoading} />}
 
-      <Authentication
+      <Wrapper
         isLoading={isLoading}
         setIsLoading={setIsLoading}
         setAuthNavigation={setAuthNavigation}
         setHideLoginWithGoogle={setHideLoginWithGoogle}
       >
         {authentication[authNavigation as keyof typeof authentication] || <Signup />}
-      </Authentication>
+      </Wrapper>
     </>
   )
 }

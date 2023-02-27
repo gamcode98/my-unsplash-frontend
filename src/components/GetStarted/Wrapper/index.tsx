@@ -1,5 +1,5 @@
 import React from 'react'
-import { AuthenticationNavigation } from '../types/AuthenticationNavigation'
+import { AuthenticationNavigation } from '../../../types/AuthenticationNavigation'
 
 interface Props {
   children: JSX.Element | JSX.Element[]
@@ -9,7 +9,7 @@ interface Props {
   setHideLoginWithGoogle: React.Dispatch<React.SetStateAction<boolean>>
 }
 
-const Authentication = (props: Props): JSX.Element => {
+const Wrapper = (props: Props): JSX.Element => {
   const { children, isLoading, setIsLoading, setAuthNavigation, setHideLoginWithGoogle } = props
 
   return (
@@ -21,4 +21,4 @@ const Authentication = (props: Props): JSX.Element => {
   )
 }
 
-export { Authentication }
+export { Wrapper }

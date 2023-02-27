@@ -1,4 +1,4 @@
-import { IImage } from '../interfaces/IImage'
+import { IImage } from '../../interfaces/IImage'
 
 interface Props {
   image: IImage

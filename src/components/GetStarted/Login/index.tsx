@@ -2,11 +2,11 @@
 import { Control, SubmitHandler, useForm, FieldValues } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { FormControl } from './FormControl'
-import loaderIcon from './../assets/ball-triangle.svg'
-import { AuthenticationNavigation } from '../types/AuthenticationNavigation'
 import { useNavigate } from 'react-router-dom'
-import useCurrentUser from '../hooks/useCurrentUser'
+import { FormControl } from '../../FormControl'
+import loaderIcon from './../../../assets/ball-triangle.svg'
+import { AuthenticationNavigation } from '../../../types/AuthenticationNavigation'
+import useCurrentUser from '../../../hooks/useCurrentUser'
 
 const schema = yup.object({
   email: yup

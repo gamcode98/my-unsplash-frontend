@@ -1,7 +1,7 @@
 /* eslint-disable react/jsx-indent */
-import { IImage } from '../interfaces/IImage'
-import { Image } from './Image'
-import { ImageNotFound } from './ImageNotFound'
+import { IImage } from '../../interfaces/IImage'
+import { Image } from '../Image'
+import { ImageNotFound } from '../ImageNotFound'
 
 interface Props {
   handleOpenModal: (param: string) => void

@@ -1,10 +1,11 @@
+/* eslint-disable react/jsx-curly-newline */
 import { useState } from 'react'
 import { Route, Routes } from 'react-router-dom'
 import { IAlert } from './interfaces/IAlert'
 import { IImage } from './interfaces/IImage'
-import { Home } from './routes/Home/Home'
-import MySpace from './routes/MySpace/MySpace'
-import { Navigation } from './routes/Navigation/Navigation'
+import { Home } from './routes/Home'
+import MySpace from './routes/MySpace'
+import { Navigation } from './routes/Navigation'
 
 const fakeImages: IImage[] = [
   {
@@ -50,11 +51,27 @@ function App (): JSX.Element {
 
   return (
     <Routes>
-      <Route path='/' element={<Navigation setAlert={setAlert} images={images} setImages={setImages} setSearchResults={setSearchResults} />}>
+      <Route
+        path='/'
+        element={
+          <Navigation
+            setAlert={setAlert}
+            images={images}
+            setImages={setImages}
+            setSearchResults={setSearchResults}
+          />}
+      >
         <Route path='/' element={<Home />} />
         <Route
           path='/my-space'
-          element={<MySpace alert={alert} setAlert={setAlert} images={images} setImages={setImages} searchResults={searchResults} />}
+          element={
+            <MySpace
+              alert={alert}
+              setAlert={setAlert}
+              images={images}
+              setImages={setImages}
+              searchResults={searchResults}
+            />}
         />
       </Route>
     </Routes>

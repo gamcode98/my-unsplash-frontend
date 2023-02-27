@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { IImage } from '../interfaces/IImage'
+import { IImage } from '../../interfaces/IImage'
 
 interface Props {
   images: IImage[]
@@ -12,7 +12,9 @@ const Search = (props: Props): JSX.Element => {
   const [searchTerm, setSearchTerm] = useState('')
 
   useEffect(() => {
-    const results = images.filter(image => image.label.toLowerCase().includes(searchTerm))
+    const results = images.filter(image => {
+      return image.label.toLowerCase().includes(searchTerm.toLowerCase())
+    })
     setSearchResults(results)
   }, [images, searchTerm])
 
@@ -26,7 +28,7 @@ const Search = (props: Props): JSX.Element => {
       value={searchTerm}
       className='border border-light-gray rounded-md p-2 focus:outline-none
     focus:border-black bg-magnifying-glass bg-no-repeat bg-w-20 bg-custom-position pl-12 w-3/4'
-      type='text'
+      type='search'
       placeholder='Search by name'
     />
   )
