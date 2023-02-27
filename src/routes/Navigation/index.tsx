@@ -1,8 +1,6 @@
+import { useRef, useState } from 'react'
 import logoIconDesktop from './../../assets/my-unsplash-logo-desktop.svg'
 import logoIconMobile from './../../assets/my-unsplash-logo-mobile.svg'
-import barsIcon from './../../assets/bars.svg'
-import xMarkIcon from './../../assets/x-mark.svg'
-import { useRef, useState } from 'react'
 import { Outlet } from 'react-router-dom'
 import { AddImage } from '../../components/AddImage'
 import { IAlert } from '../../interfaces/IAlert'
@@ -24,7 +22,6 @@ interface Props {
 const Navigation = (props: Props): JSX.Element => {
   const { setAlert, images, setImages, setSearchResults } = props
 
-  const [showMenu, setShowMenu] = useState<boolean>(false)
   const [loginIsPressed, setLoginIsPressed] = useState<boolean>(false)
   const [modalAction, setModalAction] = useState<ModalAction>(null)
 
@@ -58,34 +55,31 @@ const Navigation = (props: Props): JSX.Element => {
             {currentUser !== null &&
               <Search images={images} setSearchResults={setSearchResults} />}
           </div>
-          <button onClick={() => setShowMenu(!showMenu)} className='outline-none lg:hidden'>
-            <img src={showMenu ? xMarkIcon : barsIcon} width={30} />
-          </button>
-          <ul className={`absolute left-0 right-0 top-16 bg-white shadow-md p-4 flex flex-col items-center ${showMenu ? 'translate-x-0' : '-translate-x-[120%] md:-translate-x-[150%]'} ease-in duration-300 
-        md:w-3/5 md:mx-auto lg:static lg:translate-x-0 lg:flex-row lg:gap-6 lg:w-auto lg:mx-0 lg:shadow-none`}
-          >
+
+          <div className='flex gap-8'>
             {currentUser !== null &&
               <button
-                className='bg-green text-white px-4 py-2 rounded-lg mb-2 lg:mb-0 hover:-translate-y-0.5 ease-linear duration-100 will-change-transform'
+                className='hidden md:block bg-green text-white px-4 py-2 rounded-lg mb-2 lg:mb-0 hover:-translate-y-0.5 ease-linear duration-100 will-change-transform'
                 onClick={handleOpenModalAddImage}
               >Add a photo
               </button>}
 
-            {currentUser !== null && <UserActions />}
+            {currentUser !== null &&
+              <UserActions handleOpenModalAddImage={handleOpenModalAddImage} />}
 
             {currentUser === null &&
-              <li className='hover:border-b-2 cursor-pointer' onClick={() => handleOpenModalToLogin(true)}>
-                <span>Log in</span>
-              </li>}
+              <button className='hidden md:block hover:border-b-2 cursor-pointer' onClick={() => handleOpenModalToLogin(true)}>
+                Log in
+              </button>}
 
             {currentUser === null &&
               <button
-                className='bg-green text-white font-bold px-4 py-2 rounded-lg block mx-auto lg:mx-0 lg:px-8 hover:-translate-y-0.5 ease-linear duration-100 will-change-transform'
+                className='hidden md:block bg-green text-white font-bold px-4 py-2 rounded-lg mx-auto lg:mx-0 lg:px-8 hover:-translate-y-0.5 ease-linear duration-100 will-change-transform'
                 onClick={() => setModalAction('open')}
               >Get started
               </button>}
+          </div>
 
-          </ul>
         </nav>
       </header>
 

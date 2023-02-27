@@ -4,8 +4,15 @@ import useCurrentUser from '../../hooks/useCurrentUser'
 import chevrondownIcon from './../../assets/chevron-down.svg'
 import settingsIcon from './../../assets/settings.svg'
 import logoutIcon from './../../assets/logout.svg'
+import uploadIcon from './../../assets/upload.svg'
 
-const UserActions = (): JSX.Element => {
+interface Props {
+  handleOpenModalAddImage: () => void
+}
+
+const UserActions = (props: Props): JSX.Element => {
+  const { handleOpenModalAddImage } = props
+
   const { setCurrentUser } = useCurrentUser()
 
   const navigate = useNavigate()
@@ -41,6 +48,13 @@ const UserActions = (): JSX.Element => {
         <button className='flex items-center gap-2 mb-2 border-b border-b-light-gray p-4 pr-10'>
           <img src={settingsIcon} width={20} />
           <span>Settings</span>
+        </button>
+        <button
+          className='md:hidden flex items-center gap-2 p-4 border-b border-b-light-gray pr-5'
+          onClick={handleOpenModalAddImage}
+        >
+          <img src={uploadIcon} width={20} />
+          <span>Add a photo</span>
         </button>
         <button
           className='flex items-center gap-2 p-4 pr-10'
