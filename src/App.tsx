@@ -22,17 +22,11 @@ function App (): JSX.Element {
   })
 
   useEffect(() => {
-    get<ServerResponse>('/auth/validate')
+    void get<ServerResponse>('/auth/validate')
       .then(({ data }) => {
         const { response: { user } } = data
         setCurrentUser(user)
         navigate(ROUTES.GALLERY)
-      }).catch(error => {
-        setAlert?.({
-          message: error.response?.data?.message ?? 'Something went wrong',
-          status: 'error',
-          show: true
-        })
       })
   }, [])
 
