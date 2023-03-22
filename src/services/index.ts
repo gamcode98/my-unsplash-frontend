@@ -1,19 +1,5 @@
 import axios from 'axios'
 
-interface Headers {
-  headers: {
-    Authorization: string | undefined
-  }
-}
-
-const getHeaders = (): Headers => {
-  return {
-    headers: {
-      Authorization: getAuthorization()
-    }
-  }
-}
-
 const getAuthorization = (): string | undefined => {
   const tokenStored = localStorage.getItem('token')
   if (tokenStored !== null) {
@@ -22,12 +8,16 @@ const getAuthorization = (): string | undefined => {
   }
 }
 
+const headers = {
+  Authorization: getAuthorization()
+}
+
 const backendUrl: string = import.meta.env.VITE_BACKEND_URL
 
 const backendApi = axios.create({ baseURL: backendUrl })
 
 export {
-  getHeaders,
+  headers,
   backendApi,
   backendUrl
 }

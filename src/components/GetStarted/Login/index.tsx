@@ -51,7 +51,7 @@ const Login = (props: Props): JSX.Element => {
   }
 
   const { handleSubmit, control, reset } = useForm<IFormInputs>({
-    defaultValues: { email: '', password: '123okAsd#' },
+    defaultValues: { email: '', password: '123#okAsd' },
     resolver: yupResolver(schema),
     mode: 'onChange'
   })

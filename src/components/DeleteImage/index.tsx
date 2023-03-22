@@ -6,6 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import { FormControl } from '../FormControl'
 import { IAlert } from '../../interfaces/IAlert'
 import useImagesContext from '../../hooks/useImagesContext'
+import { remove } from '../../services/privateService'
 
 const schema = yup.object({
   password: yup
@@ -37,16 +38,30 @@ const DeleteImage = (props: Props): JSX.Element => {
   })
 
   const onSubmit: SubmitHandler<IFormInputs> = data => {
-    console.log(data)
+    const { password } = data
     setIsloading(true)
     reset()
-    // setTimeout(() => {
-    //   const imagesFiltered = images.filter(image => image._id !== imageId)
-    //   setImages(imagesFiltered)
-    //   setIsloading(false)
-    //   setAlert({ status: 'success', message: 'Image deleted successfully', show: true })
-    //   handleCloseModal()
-    // }, 3000)
+    remove('/images', { id: imageId, password })
+      .then(() => {
+        const imagesFiltered = images.filter(image => image._id !== imageId)
+        setImages(imagesFiltered)
+        setAlert({
+          status: 'success',
+          message: 'Image deleted successfully',
+          show: true
+        })
+      })
+      .catch(error => {
+        setAlert?.({
+          message: error.response?.data?.message ?? 'Something went wrong',
+          status: 'error',
+          show: true
+        })
+      })
+      .finally(() => {
+        setIsloading(false)
+        handleCloseModal()
+      })
   }
 
   const handleClose = (): void => {
