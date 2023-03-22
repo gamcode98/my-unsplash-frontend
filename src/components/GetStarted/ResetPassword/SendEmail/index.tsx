@@ -5,7 +5,7 @@ import * as yup from 'yup'
 import { FormControl } from '../../../FormControl'
 import loaderIcon from './../../../../assets/ball-triangle.svg'
 import { AuthenticationNavigation } from '../../../../types/AuthenticationNavigation'
-import { post } from '../../../../services/privateService'
+import { post } from '../../../../services/publicService'
 import { IAlert } from '../../../../interfaces/IAlert'
 
 interface Email {
@@ -44,7 +44,7 @@ const SendEmail = (props: Props): JSX.Element => {
   const onSubmit: SubmitHandler<IFormInputs> = data => {
     reset()
     setIsLoading?.(true)
-    post('/recovery', data)
+    post('/auth/recovery', data)
       .then(() => {
         setEmail({ emailSent: true, emailAddress: data.email })
       })
