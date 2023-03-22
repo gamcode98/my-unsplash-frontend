@@ -62,7 +62,7 @@ function App (): JSX.Element {
             setSearchResults={setSearchResults}
           />}
       >
-        <Route path='/' element={<Home />} />
+        <Route path='/' element={<Home setAlert={setAlert} alert={alert} />} />
         <Route
           path='/gallery'
           element={

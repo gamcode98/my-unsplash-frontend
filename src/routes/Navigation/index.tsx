@@ -92,6 +92,7 @@ const Navigation = (props: Props): JSX.Element => {
         <GetStarted
           loginIsPressed={loginIsPressed}
           setModalAction={setModalAction}
+          setAlert={setAlert}
         />
       </Modal>
 

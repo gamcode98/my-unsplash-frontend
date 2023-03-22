@@ -1,10 +1,19 @@
 import { useState } from 'react'
+import { Alert } from '../../components/Alert'
 import { GetStarted } from '../../components/GetStarted'
 import { Modal } from '../../components/Modal'
+import { IAlert } from '../../interfaces/IAlert'
 import { ModalAction } from '../../types'
 import heroImage from './../../assets/hero-image.svg'
 
-const Home = (): JSX.Element => {
+interface Props {
+  alert: IAlert
+  setAlert: React.Dispatch<React.SetStateAction<IAlert>>
+}
+
+const Home = (props: Props): JSX.Element => {
+  const { alert, setAlert } = props
+
   const [modalAction, setModalAction] = useState<ModalAction>(null)
 
   return (
@@ -28,8 +37,10 @@ const Home = (): JSX.Element => {
       </section>
 
       <Modal modalAction={modalAction}>
-        <GetStarted setModalAction={setModalAction} />
+        <GetStarted setModalAction={setModalAction} setAlert={setAlert} />
       </Modal>
+
+      <Alert alert={alert} setAlert={setAlert} />
 
     </main>
   )

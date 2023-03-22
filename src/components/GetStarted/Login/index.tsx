@@ -10,6 +10,7 @@ import useCurrentUser from '../../../hooks/useCurrentUser'
 import { post } from '../../../services/publicService'
 import { ServerResponse } from '../../../interfaces/login.dto'
 import { ROUTES } from '../../../enums/routes'
+import { IAlert } from '../../../interfaces/IAlert'
 
 const schema = yup.object({
   email: yup
@@ -25,6 +26,7 @@ interface Props {
   isLoading?: boolean
   setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>
   setAuthNavigation?: React.Dispatch<React.SetStateAction<AuthenticationNavigation>>
+  setAlert?: React.Dispatch<React.SetStateAction<IAlert>>
   handleCloseModalBtn: () => void
 }
 
@@ -34,7 +36,7 @@ interface IFormInputs {
 }
 
 const Login = (props: Props): JSX.Element => {
-  const { setHideLoginWithGoogle, isLoading, setIsLoading, setAuthNavigation, handleCloseModalBtn } = props
+  const { setHideLoginWithGoogle, isLoading, setIsLoading, setAuthNavigation, setAlert, handleCloseModalBtn } = props
 
   const { setCurrentUser } = useCurrentUser()
 
@@ -60,15 +62,21 @@ const Login = (props: Props): JSX.Element => {
     post<IFormInputs, ServerResponse>('/auth/login', data)
       .then(({ data }) => {
         const { response: { user, token } } = data
-        setHideLoginWithGoogle?.(false)
-        setIsLoading?.(false)
         localStorage.setItem('token', JSON.stringify(token))
         setCurrentUser(user)
-        handleCloseModalBtn()
         navigate(ROUTES.GALLERY)
       })
-      .catch(error => {
-        console.log({ error })
+      .catch((error) => {
+        setAlert?.({
+          message: error.response?.data?.message ?? 'Something went wrong',
+          status: 'error',
+          show: true
+        })
+      })
+      .finally(() => {
+        setHideLoginWithGoogle?.(false)
+        setIsLoading?.(false)
+        handleCloseModalBtn()
       })
   }
 

@@ -8,14 +8,16 @@ import { ResetPassword } from './ResetPassword'
 import { Signup } from './Signup'
 import { Message } from './Message'
 import { ModalAction } from '../../types'
+import { IAlert } from '../../interfaces/IAlert'
 
 interface Props {
   loginIsPressed?: boolean
   setModalAction: React.Dispatch<React.SetStateAction<ModalAction>>
+  setAlert: React.Dispatch<React.SetStateAction<IAlert>>
 }
 
 const GetStarted = (props: Props): JSX.Element => {
-  const { loginIsPressed, setModalAction } = props
+  const { loginIsPressed, setModalAction, setAlert } = props
 
   const [hideLoginWithGoogle, setHideLoginWithGoogle] = useState<boolean>(false)
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -50,6 +52,7 @@ const GetStarted = (props: Props): JSX.Element => {
         setIsLoading={setIsLoading}
         setAuthNavigation={setAuthNavigation}
         setHideLoginWithGoogle={setHideLoginWithGoogle}
+        setAlert={setAlert}
       >
         {authentication[authNavigation as keyof typeof authentication] || <Signup />}
       </Wrapper>
