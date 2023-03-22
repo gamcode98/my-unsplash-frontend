@@ -6,7 +6,7 @@ import settingsIcon from './../../assets/settings.svg'
 import logoutIcon from './../../assets/logout.svg'
 import uploadIcon from './../../assets/upload.svg'
 import galleryIcon from './../../assets/gallery.svg'
-import { URLS } from '../../enums/urls'
+import { ROUTES } from '../../enums/routes'
 
 interface Props {
   handleOpenModalAddImage: () => void
@@ -45,7 +45,7 @@ const UserActions = (props: Props): JSX.Element => {
 
   const openModal = (): void => {
     setToggle(prev => !prev)
-    if (currentUrl === URLS.SETTINGS) {
+    if (currentUrl === ROUTES.SETTINGS) {
       navigate('/gallery')
     }
     handleOpenModalAddImage()

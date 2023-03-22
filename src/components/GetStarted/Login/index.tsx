@@ -7,6 +7,9 @@ import { FormControl } from '../../FormControl'
 import loaderIcon from './../../../assets/ball-triangle.svg'
 import { AuthenticationNavigation } from '../../../types/AuthenticationNavigation'
 import useCurrentUser from '../../../hooks/useCurrentUser'
+import { post } from '../../../services/publicService'
+import { ServerResponse } from '../../../interfaces/login.dto'
+import { ROUTES } from '../../../enums/routes'
 
 const schema = yup.object({
   email: yup
@@ -45,24 +48,28 @@ const Login = (props: Props): JSX.Element => {
   }
 
   const { handleSubmit, control, reset } = useForm<IFormInputs>({
-    defaultValues: { email: '', password: '' },
+    defaultValues: { email: '', password: '123okAsd#' },
     resolver: yupResolver(schema),
     mode: 'onChange'
   })
 
   const onSubmit: SubmitHandler<IFormInputs> = data => {
-    const { email, password } = data
     setIsLoading?.(true)
     setHideLoginWithGoogle?.(true)
-    console.log({ email }, { password })
     reset()
-    setTimeout(() => {
-      setHideLoginWithGoogle?.(false)
-      setIsLoading?.(false)
-      setCurrentUser({ _id: crypto.randomUUID(), email })
-      handleCloseModalBtn()
-      navigate('/gallery')
-    }, 3000)
+    post<IFormInputs, ServerResponse>('/auth/login', data)
+      .then(({ data }) => {
+        const { response: { user, token } } = data
+        setHideLoginWithGoogle?.(false)
+        setIsLoading?.(false)
+        localStorage.setItem('token', JSON.stringify(token))
+        setCurrentUser(user)
+        handleCloseModalBtn()
+        navigate(ROUTES.GALLERY)
+      })
+      .catch(error => {
+        console.log({ error })
+      })
   }
 
   return (

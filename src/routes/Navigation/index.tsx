@@ -11,7 +11,7 @@ import useCurrentUser from '../../hooks/useCurrentUser'
 import { UserActions } from '../../components/UserActions'
 import { Modal } from '../../components/Modal'
 import { ModalAction } from '../../types'
-import { URLS } from '../../enums/urls'
+import { ROUTES } from '../../enums/routes'
 
 interface Props {
   setAlert: React.Dispatch<React.SetStateAction<IAlert>>
@@ -57,12 +57,12 @@ const Navigation = (props: Props): JSX.Element => {
               <source media='(min-width:375px )' srcSet={logoIconMobile} />
               <img src={logoIconMobile} />
             </picture>
-            {currentUser !== null && currentUrl !== URLS.SETTINGS &&
+            {currentUser !== null && currentUrl !== ROUTES.SETTINGS &&
               <Search images={images} setSearchResults={setSearchResults} />}
           </div>
 
           <div className='flex gap-8'>
-            {currentUser !== null && currentUrl !== URLS.SETTINGS &&
+            {currentUser !== null && currentUrl !== ROUTES.SETTINGS &&
               <button
                 className='hidden md:block bg-green text-white px-4 py-2 rounded-lg mb-2 lg:mb-0 hover:-translate-y-0.5 ease-linear duration-100 will-change-transform'
                 onClick={handleOpenModalAddImage}
