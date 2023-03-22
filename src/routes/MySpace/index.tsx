@@ -3,25 +3,37 @@ import { Alert } from '../../components/Alert'
 import { DeleteImage } from '../../components/DeleteImage'
 import { Images } from '../../components/Images'
 import { ImagesSkeleton } from '../../components/ImagesSkeleton'
+import useImagesContext from '../../hooks/useImagesContext'
 import { IAlert } from '../../interfaces/IAlert'
-import { IImage } from '../../interfaces/IImage'
+import { ServerResponse } from '../../interfaces/IImage'
+import { get } from '../../services/privateService'
 
 interface Props {
   alert: IAlert
   setAlert: React.Dispatch<React.SetStateAction<IAlert>>
-  images: IImage[]
-  setImages: React.Dispatch<React.SetStateAction<IImage[]>>
-  searchResults: IImage[]
 }
 
 const MySpace = (props: Props): JSX.Element => {
-  const { alert, setAlert, images, setImages, searchResults } = props
+  const { alert, setAlert } = props
+
+  const { setImages, setSearchResults } = useImagesContext()
 
   const [imageId, setImageId] = useState<null | string>(null)
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    setTimeout(() => setIsLoading(false), 1000)
+    // setTimeout(() => setIsLoading(false), 1000)
+    get<ServerResponse>('/images/?limit=10&offset=0')
+      .then(({ data }) => {
+        const { response: { content } } = data
+        console.log({ data })
+        setImages(content)
+        setSearchResults(content)
+      })
+      .catch(error => {
+        console.log({ error })
+      })
+      .finally(() => setIsLoading(false))
   }, [])
 
   const modalRef = useRef<HTMLDialogElement | null>(null)
@@ -38,15 +50,13 @@ const MySpace = (props: Props): JSX.Element => {
       {
         isLoading
           ? <ImagesSkeleton />
-          : <Images handleOpenModal={handleOpenModal} searchResults={searchResults} />
+          : <Images handleOpenModal={handleOpenModal} />
       }
       <dialog ref={modalRef} className='rounded-md p-6 fixed md:w-2/4 lg:w-1/3'>
         <DeleteImage
           handleCloseModal={handleCloseModal}
           imageId={imageId}
           setAlert={setAlert}
-          images={images}
-          setImages={setImages}
         />
       </dialog>
       <Alert alert={alert} setAlert={setAlert} />

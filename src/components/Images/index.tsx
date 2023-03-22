@@ -1,15 +1,16 @@
 /* eslint-disable react/jsx-indent */
-import { IImage } from '../../interfaces/IImage'
+import useImagesContext from '../../hooks/useImagesContext'
 import { Image } from '../Image'
 import { ImageNotFound } from '../ImageNotFound'
 
 interface Props {
   handleOpenModal: (param: string) => void
-  searchResults: IImage[]
 }
 
 const Images = (props: Props): JSX.Element => {
-  const { handleOpenModal, searchResults } = props
+  const { handleOpenModal } = props
+
+  const { searchResults } = useImagesContext()
 
   return (
     <>

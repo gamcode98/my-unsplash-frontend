@@ -4,8 +4,8 @@ import { Control, SubmitHandler, useForm, FieldValues } from 'react-hook-form'
 import * as yup from 'yup'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { FormControl } from '../FormControl'
-import { IImage } from '../../interfaces/IImage'
 import { IAlert } from '../../interfaces/IAlert'
+import useImagesContext from '../../hooks/useImagesContext'
 
 const schema = yup.object({
   password: yup
@@ -17,8 +17,6 @@ interface Props {
   handleCloseModal: () => void
   imageId: string | null
   setAlert: React.Dispatch<React.SetStateAction<IAlert>>
-  images: IImage[]
-  setImages: React.Dispatch<React.SetStateAction<IImage[]>>
 }
 
 interface IFormInputs {
@@ -26,7 +24,9 @@ interface IFormInputs {
 }
 
 const DeleteImage = (props: Props): JSX.Element => {
-  const { handleCloseModal, imageId, setAlert, images, setImages } = props
+  const { handleCloseModal, imageId, setAlert } = props
+
+  const { images, setImages } = useImagesContext()
 
   const [isLoading, setIsloading] = useState<boolean>(false)
 
@@ -40,13 +40,13 @@ const DeleteImage = (props: Props): JSX.Element => {
     console.log(data)
     setIsloading(true)
     reset()
-    setTimeout(() => {
-      const imagesFiltered = images.filter(image => image._id !== imageId)
-      setImages(imagesFiltered)
-      setIsloading(false)
-      setAlert({ status: 'success', message: 'Image deleted successfully', show: true })
-      handleCloseModal()
-    }, 3000)
+    // setTimeout(() => {
+    //   const imagesFiltered = images.filter(image => image._id !== imageId)
+    //   setImages(imagesFiltered)
+    //   setIsloading(false)
+    //   setAlert({ status: 'success', message: 'Image deleted successfully', show: true })
+    //   handleCloseModal()
+    // }, 3000)
   }
 
   const handleClose = (): void => {

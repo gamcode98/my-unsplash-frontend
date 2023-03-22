@@ -15,7 +15,8 @@ import { IAlert } from '../../../interfaces/IAlert'
 const schema = yup.object({
   email: yup
     .string()
-    .required(),
+    .required()
+    .matches(/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/, 'Must be a valid address'),
   password: yup
     .string()
     .required()

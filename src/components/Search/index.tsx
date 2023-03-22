@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import { IImage } from '../../interfaces/IImage'
+import { Content } from '../../interfaces/IImage'
 
 interface Props {
-  images: IImage[]
-  setSearchResults: React.Dispatch<React.SetStateAction<IImage[]>>
+  images: Content[]
+  setSearchResults: (images: Content[] | []) => void
 }
 
 const Search = (props: Props): JSX.Element => {

@@ -1,31 +1,35 @@
 /* eslint-disable @typescript-eslint/no-misused-promises */
+/* eslint-disable no-useless-escape */
 import { useState } from 'react'
 import { Control, SubmitHandler, useForm, FieldValues } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { FormControl } from '../FormControl'
 import { IAlert } from '../../interfaces/IAlert'
-import { IImage } from '../../interfaces/IImage'
+import { Content } from '../../interfaces/IImage'
+import { post } from '../../services/privateService'
+import { ServerResponse } from '../../interfaces/image.dto'
 
 const schema = yup.object({
   label: yup
     .string()
     .required(),
-  photoUrl: yup
+  imageUrl: yup
     .string()
     .required()
+    .matches(/https?:\/\/(www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()!@:%_\.~#?&\/\/=]*)/, 'Must be a valid url')
 }).required()
 
 interface Props {
   handleCloseModal: () => void
   setAlert: React.Dispatch<React.SetStateAction<IAlert>>
-  images: IImage[]
-  setImages: React.Dispatch<React.SetStateAction<IImage[]>>
+  images: Content[]
+  setImages: (images: Content[] | []) => void
 }
 
 interface IFormInputs {
   label: string
-  photoUrl: string
+  imageUrl: string
 }
 
 const AddImage = (props: Props): JSX.Element => {
@@ -34,21 +38,26 @@ const AddImage = (props: Props): JSX.Element => {
   const [isLoading, setIsloading] = useState<boolean>(false)
 
   const { handleSubmit, control, reset } = useForm<IFormInputs>({
-    defaultValues: { label: '', photoUrl: '' },
+    defaultValues: { label: '', imageUrl: '' },
     resolver: yupResolver(schema),
     mode: 'onChange'
   })
 
   const onSubmit: SubmitHandler<IFormInputs> = data => {
-    const { label, photoUrl } = data
     setIsloading(true)
     reset()
-    setTimeout(() => {
-      setImages([{ _id: crypto.randomUUID(), label, photoUrl }, ...images])
-      setIsloading(false)
-      setAlert({ status: 'success', message: 'Image added successfully', show: true })
-      handleCloseModal()
-    }, 3000)
+    post<IFormInputs, ServerResponse>('/images', data)
+      .then(({ data }) => {
+        setImages([data.response, ...images])
+        setAlert({ status: 'success', message: 'Image added successfully', show: true })
+      })
+      .catch(() => {
+        setAlert({ status: 'error', message: 'Something went wrong', show: true })
+      })
+      .finally(() => {
+        setIsloading(false)
+        handleCloseModal()
+      })
   }
 
   const handleClose = (): void => {
@@ -72,9 +81,9 @@ const AddImage = (props: Props): JSX.Element => {
 
       <FormControl
         control={(control as unknown) as Control<FieldValues>}
-        name='photoUrl'
+        name='imageUrl'
         rules={{ required: true }}
-        labelId='photo-url'
+        labelId='image-url'
         labelText='Photo URL'
         typeOfInput='text'
         placeholder='https://unsplash.com/es/fotos/1223498193-J-aHtRnZalkpsI...'

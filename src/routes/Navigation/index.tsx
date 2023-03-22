@@ -4,7 +4,6 @@ import logoIconMobile from './../../assets/my-unsplash-logo-mobile.svg'
 import { Outlet, useLocation } from 'react-router-dom'
 import { AddImage } from '../../components/AddImage'
 import { IAlert } from '../../interfaces/IAlert'
-import { IImage } from '../../interfaces/IImage'
 import { Search } from '../../components/Search'
 import { GetStarted } from '../../components/GetStarted'
 import useCurrentUser from '../../hooks/useCurrentUser'
@@ -12,16 +11,16 @@ import { UserActions } from '../../components/UserActions'
 import { Modal } from '../../components/Modal'
 import { ModalAction } from '../../types'
 import { ROUTES } from '../../enums/routes'
+import useImagesContext from '../../hooks/useImagesContext'
 
 interface Props {
   setAlert: React.Dispatch<React.SetStateAction<IAlert>>
-  images: IImage[]
-  setImages: React.Dispatch<React.SetStateAction<IImage[]>>
-  setSearchResults: React.Dispatch<React.SetStateAction<IImage[]>>
 }
 
 const Navigation = (props: Props): JSX.Element => {
-  const { setAlert, images, setImages, setSearchResults } = props
+  const { setAlert } = props
+
+  const { images, setImages, setSearchResults } = useImagesContext()
 
   const location = useLocation()
 
