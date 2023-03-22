@@ -22,12 +22,12 @@ function App (): JSX.Element {
   })
 
   useEffect(() => {
-    void get<ServerResponse>('/auth/validate')
+    get<ServerResponse>('/auth/validate')
       .then(({ data }) => {
         const { response: { user } } = data
         setCurrentUser(user)
         navigate(ROUTES.GALLERY)
-      })
+      }).catch(() => {})
   }, [])
 
   return (
