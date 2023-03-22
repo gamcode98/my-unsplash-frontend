@@ -25,12 +25,10 @@ const MySpace = (props: Props): JSX.Element => {
     get<ServerResponse>('/images/?limit=10&offset=0')
       .then(({ data }) => {
         const { response: { content } } = data
-        console.log({ data })
         setImages(content)
         setSearchResults(content)
       })
       .catch(error => {
-        console.log({ error })
         setAlert?.({
           message: error.response?.data?.message ?? 'Something went wrong',
           status: 'error',
