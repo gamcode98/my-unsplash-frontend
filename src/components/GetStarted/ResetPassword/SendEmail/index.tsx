@@ -42,11 +42,12 @@ const SendEmail = (props: Props): JSX.Element => {
   })
 
   const onSubmit: SubmitHandler<IFormInputs> = data => {
+    const { email } = data
     reset()
     setIsLoading?.(true)
     post('/auth/recovery', data)
       .then(() => {
-        setEmail({ emailSent: true, emailAddress: data.email })
+        setEmail({ emailSent: true, emailAddress: email })
       })
       .catch((error) => {
         setAlert?.({
