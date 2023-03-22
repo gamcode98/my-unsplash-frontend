@@ -5,6 +5,8 @@ import * as yup from 'yup'
 import { FormControl } from '../../../FormControl'
 import loaderIcon from './../../../../assets/ball-triangle.svg'
 import { AuthenticationNavigation } from '../../../../types/AuthenticationNavigation'
+import { post } from '../../../../services/privateService'
+import { IAlert } from '../../../../interfaces/IAlert'
 
 interface Email {
   emailSent: boolean
@@ -27,10 +29,11 @@ interface Props {
   setAuthNavigation?: React.Dispatch<React.SetStateAction<AuthenticationNavigation>>
   isLoading?: boolean
   setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>
+  setAlert?: React.Dispatch<React.SetStateAction<IAlert>>
 }
 
 const SendEmail = (props: Props): JSX.Element => {
-  const { setHideLoginWithGoogle, setEmail, setAuthNavigation, isLoading, setIsLoading } = props
+  const { setHideLoginWithGoogle, setEmail, setAuthNavigation, isLoading, setIsLoading, setAlert } = props
 
   const { handleSubmit, control, reset } = useForm<IFormInputs>({
     defaultValues: { email: '' },
@@ -39,13 +42,22 @@ const SendEmail = (props: Props): JSX.Element => {
   })
 
   const onSubmit: SubmitHandler<IFormInputs> = data => {
-    const { email } = data
     reset()
     setIsLoading?.(true)
-    setTimeout(() => {
-      setEmail({ emailSent: true, emailAddress: email })
-      setIsLoading?.(false)
-    }, 3000)
+    post('/recovery', data)
+      .then(() => {
+        setEmail({ emailSent: true, emailAddress: data.email })
+      })
+      .catch((error) => {
+        setAlert?.({
+          message: error.response?.data?.message ?? 'Something went wrong',
+          status: 'error',
+          show: true
+        })
+      })
+      .finally(() => {
+        setIsLoading?.(false)
+      })
   }
 
   const goBackToLogin = (): void => {
