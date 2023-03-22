@@ -22,7 +22,6 @@ const MySpace = (props: Props): JSX.Element => {
   const [isLoading, setIsLoading] = useState(true)
 
   useEffect(() => {
-    // setTimeout(() => setIsLoading(false), 1000)
     get<ServerResponse>('/images/?limit=10&offset=0')
       .then(({ data }) => {
         const { response: { content } } = data
@@ -32,6 +31,11 @@ const MySpace = (props: Props): JSX.Element => {
       })
       .catch(error => {
         console.log({ error })
+        setAlert?.({
+          message: error.response?.data?.message ?? 'Something went wrong',
+          status: 'error',
+          show: true
+        })
       })
       .finally(() => setIsLoading(false))
   }, [])

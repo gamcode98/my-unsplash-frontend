@@ -29,24 +29,25 @@ const UserActions = (props: Props): JSX.Element => {
   }
 
   const handleLogout = (): void => {
+    localStorage.removeItem('token')
     setCurrentUser(null)
-    navigate('/')
+    navigate(ROUTES.ROOT)
   }
 
   const goToSettings = (): void => {
     setToggle(prev => !prev)
-    navigate('/settings')
+    navigate(ROUTES.SETTINGS)
   }
 
   const goToGallery = (): void => {
     setToggle(prev => !prev)
-    navigate('/gallery')
+    navigate(ROUTES.GALLERY)
   }
 
   const openModal = (): void => {
     setToggle(prev => !prev)
     if (currentUrl === ROUTES.SETTINGS) {
-      navigate('/gallery')
+      navigate(ROUTES.GALLERY)
     }
     handleOpenModalAddImage()
   }

@@ -1,19 +1,40 @@
 /* eslint-disable react/jsx-curly-newline */
-import { useState } from 'react'
-import { Route, Routes } from 'react-router-dom'
+import { useEffect, useState } from 'react'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import { ROUTES } from './enums/routes'
+import useCurrentUser from './hooks/useCurrentUser'
 import { IAlert } from './interfaces/IAlert'
+import { ServerResponse } from './interfaces/validate-session.dto'
 import { Home } from './routes/Home'
 import MySpace from './routes/MySpace'
 import { Navigation } from './routes/Navigation'
 import { Settings } from './routes/Settings'
+import { get } from './services/privateService'
 
 function App (): JSX.Element {
+  const { setCurrentUser } = useCurrentUser()
+  const navigate = useNavigate()
+
   const [alert, setAlert] = useState<IAlert>({
     show: false,
     status: 'success',
     message: ''
   })
+
+  useEffect(() => {
+    get<ServerResponse>('/auth/validate')
+      .then(({ data }) => {
+        const { response: { user } } = data
+        setCurrentUser(user)
+        navigate(ROUTES.GALLERY)
+      }).catch(error => {
+        setAlert?.({
+          message: error.response?.data?.message ?? 'Something went wrong',
+          status: 'error',
+          show: true
+        })
+      })
+  }, [])
 
   return (
     <Routes>
