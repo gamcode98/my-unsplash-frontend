@@ -5,14 +5,23 @@ import * as yup from 'yup'
 import loaderIcon from './../../../assets/ball-triangle.svg'
 import { FormControl } from '../../FormControl'
 import { AuthenticationNavigation } from '../../../types/AuthenticationNavigation'
+import { post } from '../../../services/publicService'
+import { IAlert } from '../../../interfaces/IAlert'
 
 const schema = yup.object({
   email: yup
     .string()
-    .required(),
+    .required()
+    .matches(/[^@ \t\r\n]+@[^@ \t\r\n]+\.[^@ \t\r\n]+/, 'Must be a valid address'),
   password: yup
     .string()
     .required()
+    .max(17, 'Too Long!')
+    .min(7, 'Too Short!')
+    .matches(
+      /^(?=.*?[A-ZÀ-Ú])(?=.*?[a-zà-ú])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/,
+      'Must contain at least one upper case letter, one lower case letter, one number and one special character'
+    )
 }).required()
 
 interface Props {
@@ -20,6 +29,7 @@ interface Props {
   setIsLoading?: React.Dispatch<React.SetStateAction<boolean>>
   setHideLoginWithGoogle?: React.Dispatch<React.SetStateAction<boolean>>
   setAuthNavigation?: React.Dispatch<React.SetStateAction<AuthenticationNavigation>>
+  setAlert?: React.Dispatch<React.SetStateAction<IAlert>>
 }
 
 interface IFormInputs {
@@ -28,7 +38,7 @@ interface IFormInputs {
 }
 
 const Signup = (props: Props): JSX.Element => {
-  const { isLoading, setIsLoading, setHideLoginWithGoogle, setAuthNavigation } = props
+  const { isLoading, setIsLoading, setHideLoginWithGoogle, setAuthNavigation, setAlert } = props
 
   const changeToLogin = (): void => setAuthNavigation?.('login')
 
@@ -39,15 +49,24 @@ const Signup = (props: Props): JSX.Element => {
   })
 
   const onSubmit: SubmitHandler<IFormInputs> = data => {
-    const { email, password } = data
-    console.log({ email }, { password })
     setHideLoginWithGoogle?.(true)
     setIsLoading?.(true)
     reset()
-    setTimeout(() => {
-      setIsLoading?.(false)
-      setAuthNavigation?.('message')
-    }, 3000)
+    post('/auth/register', data)
+      .then(() => {
+        setAuthNavigation?.('message')
+      })
+      .catch(error => {
+        setHideLoginWithGoogle?.(false)
+        setAlert?.({
+          message: error.response?.data?.message ?? 'Something went wrong',
+          status: 'error',
+          show: true
+        })
+      })
+      .finally(() => {
+        setIsLoading?.(false)
+      })
   }
 
   return (
