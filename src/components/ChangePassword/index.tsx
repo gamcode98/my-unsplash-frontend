@@ -2,6 +2,8 @@ import { Control, SubmitHandler, useForm, FieldValues } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { FormControl } from '../FormControl'
+import { patch } from '../../services/privateService'
+import { IAlert } from '../../interfaces/IAlert'
 
 interface IFormInputs {
   oldPassword: string
@@ -15,9 +17,23 @@ const schema = yup.object({
   newPassword: yup
     .string()
     .required('new password is required')
+    .max(17, 'Too Long!')
+    .min(7, 'Too Short!')
+    .matches(
+      /^(?=.*?[A-ZÀ-Ú])(?=.*?[a-zà-ú])(?=.*?[0-9])(?=.*?[#?!@$ %^&*-]).{8,}$/,
+      'Must contain at least one upper case letter, one lower case letter, one number and one special character'
+    )
 }).required()
 
-const ChangePassword = (): JSX.Element => {
+interface Props {
+  setAlert: React.Dispatch<React.SetStateAction<IAlert>>
+  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
+  isLoading: boolean
+}
+
+const ChangePassword = (props: Props): JSX.Element => {
+  const { setAlert, setIsLoading, isLoading } = props
+
   const { handleSubmit, control, reset } = useForm<IFormInputs>({
     defaultValues: { oldPassword: '', newPassword: '' },
     resolver: yupResolver(schema),
@@ -25,9 +41,27 @@ const ChangePassword = (): JSX.Element => {
   })
 
   const onSubmit: SubmitHandler<IFormInputs> = data => {
-    const { oldPassword, newPassword } = data
-    console.log({ data })
+    setIsLoading(true)
     reset()
+    patch('/auth/update-password', data)
+      .then(() => {
+        setAlert({
+          message: 'Password updated successfully',
+          show: true,
+          status: 'success'
+        })
+      })
+      .catch(error => {
+        console.log({ error })
+        setAlert({
+          message: error.response?.data?.message ?? 'Something went wrong',
+          status: 'error',
+          show: true
+        })
+      })
+      .finally(() => {
+        setIsLoading(false)
+      })
   }
 
   return (
@@ -50,7 +84,11 @@ const ChangePassword = (): JSX.Element => {
         placeholder='New Password'
       />
 
-      <button className='bg-black font-bold text-white p-2 rounded-md w-full mb-4 hover:-translate-y-0.5 ease-linear duration-100 will-change-transform'>Submit</button>
+      <button
+        disabled={isLoading}
+        className='bg-black font-bold text-white p-2 rounded-md w-full mb-4 hover:-translate-y-0.5 ease-linear duration-100 will-change-transform'
+      >{isLoading ? 'Sending...' : 'Submit'}
+      </button>
 
     </form>
   )

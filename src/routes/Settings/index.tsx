@@ -1,9 +1,18 @@
+import { useState } from 'react'
+import { Alert } from '../../components/Alert'
 import { ChangePassword } from '../../components/ChangePassword'
 import { DeleteAccount } from '../../components/DeleteAccount'
 import { SettingCard } from '../../components/SettingCard'
 import useCurrentUser from '../../hooks/useCurrentUser'
+import { IAlert } from '../../interfaces/IAlert'
 
 const Settings = (): JSX.Element => {
+  const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [alert, setAlert] = useState<IAlert>({
+    message: '',
+    show: false,
+    status: 'success'
+  })
   const { currentUser } = useCurrentUser()
 
   return (
@@ -17,7 +26,11 @@ const Settings = (): JSX.Element => {
         </SettingCard>
 
         <SettingCard title='Change password'>
-          <ChangePassword />
+          <ChangePassword
+            setAlert={setAlert}
+            setIsLoading={setIsLoading}
+            isLoading={isLoading}
+          />
         </SettingCard>
 
         <SettingCard title='Delete Account'>
@@ -25,6 +38,7 @@ const Settings = (): JSX.Element => {
         </SettingCard>
       </div>
 
+      <Alert alert={alert} setAlert={setAlert} />
     </div>
   )
 }
