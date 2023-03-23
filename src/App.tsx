@@ -8,6 +8,7 @@ import { ServerResponse } from './interfaces/validate-session.dto'
 import { Home } from './routes/Home'
 import MySpace from './routes/MySpace'
 import { Navigation } from './routes/Navigation'
+import { ResetPassword } from './routes/ResetPassword'
 import { Settings } from './routes/Settings'
 import { get } from './services/privateService'
 
@@ -37,6 +38,7 @@ function App (): JSX.Element {
         <Route path={ROUTES.GALLERY} element={<MySpace alert={alert} setAlert={setAlert} />} />
         <Route path={ROUTES.SETTINGS} element={<Settings />} />
       </Route>
+      <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
     </Routes>
 
   )
