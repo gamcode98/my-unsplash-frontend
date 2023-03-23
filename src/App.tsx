@@ -38,7 +38,7 @@ function App (): JSX.Element {
         <Route path={ROUTES.GALLERY} element={<MySpace alert={alert} setAlert={setAlert} />} />
         <Route path={ROUTES.SETTINGS} element={<Settings />} />
       </Route>
-      <Route path={ROUTES.RESET_PASSWORD} element={<ResetPassword />} />
+      <Route path={ROUTES.RECOVERY} element={<ResetPassword />} />
     </Routes>
 
   )
