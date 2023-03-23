@@ -4,6 +4,7 @@ import * as yup from 'yup'
 import { FormControl } from '../FormControl'
 import { patch } from '../../services/privateService'
 import { IAlert } from '../../interfaces/IAlert'
+import { useState } from 'react'
 
 interface IFormInputs {
   oldPassword: string
@@ -27,12 +28,11 @@ const schema = yup.object({
 
 interface Props {
   setAlert: React.Dispatch<React.SetStateAction<IAlert>>
-  setIsLoading: React.Dispatch<React.SetStateAction<boolean>>
-  isLoading: boolean
 }
 
 const ChangePassword = (props: Props): JSX.Element => {
-  const { setAlert, setIsLoading, isLoading } = props
+  const { setAlert } = props
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const { handleSubmit, control, reset } = useForm<IFormInputs>({
     defaultValues: { oldPassword: '', newPassword: '' },
@@ -52,7 +52,6 @@ const ChangePassword = (props: Props): JSX.Element => {
         })
       })
       .catch(error => {
-        console.log({ error })
         setAlert({
           message: error.response?.data?.message ?? 'Something went wrong',
           status: 'error',

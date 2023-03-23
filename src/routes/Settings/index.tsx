@@ -7,7 +7,6 @@ import useCurrentUser from '../../hooks/useCurrentUser'
 import { IAlert } from '../../interfaces/IAlert'
 
 const Settings = (): JSX.Element => {
-  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [alert, setAlert] = useState<IAlert>({
     message: '',
     show: false,
@@ -26,15 +25,11 @@ const Settings = (): JSX.Element => {
         </SettingCard>
 
         <SettingCard title='Change password'>
-          <ChangePassword
-            setAlert={setAlert}
-            setIsLoading={setIsLoading}
-            isLoading={isLoading}
-          />
+          <ChangePassword setAlert={setAlert} />
         </SettingCard>
 
         <SettingCard title='Delete Account'>
-          <DeleteAccount />
+          <DeleteAccount setAlert={setAlert} />
         </SettingCard>
       </div>
 
